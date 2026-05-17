@@ -1,0 +1,12 @@
+spring:
+  flyway:
+    enabled: true
+  jpa:
+    show-sql: true
+
+logging:
+  level:
+    bo.ucb.sport: DEBUG
+    org.flywaydb: DEBUG
+
+# En perfil dev el ConsoleSmsAdapter imprime el OTP en consola
