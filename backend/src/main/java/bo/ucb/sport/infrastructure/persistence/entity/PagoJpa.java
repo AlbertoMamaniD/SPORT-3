@@ -33,7 +33,7 @@ public class PagoJpa {
     @Enumerated(EnumType.STRING)
     private EstadoPagoJpa estado;
 
-    @Column(length = 100)
+    @Column(length = 255)
     private String referencia;
 
     @Column(name = "fecha_pago")
