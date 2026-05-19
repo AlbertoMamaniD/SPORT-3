@@ -1,0 +1,304 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+.login-wrapper {
+  font-family: 'Outfit', sans-serif;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+.login-card {
+  background: rgba(15, 23, 42, 0.85); /* Vidrio oscuro para máximo contraste sobre el fondo naranja */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1.5px solid rgba(249, 115, 22, 0.3); /* Borde naranja de SPORT 3 */
+  border-radius: 24px;
+  padding: 3rem 2.5rem;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65), 
+              inset 0 0 2px rgba(255, 255, 255, 0.1);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+  animation: slideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.login-card:hover {
+  border-color: rgba(249, 115, 22, 0.6);
+  box-shadow: 0 35px 70px rgba(0, 0, 0, 0.8), 
+              0 0 30px rgba(249, 115, 22, 0.35);
+}
+
+.login-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #ffffff 0%, #ffedd5 50%, #f97316 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.login-subtitle {
+  color: #cbd5e1;
+  text-align: center;
+  font-size: 0.9rem;
+  margin-bottom: 2rem;
+  line-height: 1.4;
+}
+
+.login-input-group {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.login-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #f97316; /* Naranja SPORT 3 */
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.login-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.login-input-field {
+  background: rgba(9, 13, 22, 0.7);
+  border: 1.5px solid rgba(249, 115, 22, 0.2);
+  border-radius: 12px;
+  padding: 0.85rem 1.2rem;
+  padding-left: 2.8rem;
+  color: #ffffff;
+  font-size: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.login-input-field:focus {
+  border-color: #f97316;
+  background: rgba(9, 13, 22, 0.9);
+  box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.2),
+              0 0 10px rgba(249, 115, 22, 0.3);
+}
+
+.login-input-field::placeholder {
+  color: #64748b;
+}
+
+.login-input-otp {
+  letter-spacing: 0.3em;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.3rem;
+  padding-left: 1.2rem;
+}
+
+.login-btn-primary {
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  border: none;
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.9rem 1.5rem;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 15px rgba(234, 88, 12, 0.45);
+  font-family: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.login-btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(234, 88, 12, 0.6), 
+              0 0 15px rgba(234, 88, 12, 0.35);
+  background: linear-gradient(135deg, #fb923c 0%, #ea580c 100%);
+}
+
+.login-btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.login-btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.login-btn-secondary {
+  background: transparent;
+  border: 1.5px solid rgba(249, 115, 22, 0.4);
+  border-radius: 12px;
+  color: #fddfcc;
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 0.85rem 1.5rem;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.login-btn-secondary:hover {
+  background: rgba(249, 115, 22, 0.1);
+  border-color: #f97316;
+  color: #ffffff;
+}
+
+.login-alert {
+  padding: 0.85rem 1.25rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  animation: loginFadeIn 0.3s ease-out;
+}
+
+.login-alert-success {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #34d399;
+}
+
+.login-alert-danger {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
+}
+
+.login-switch-mode {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #cbd5e1;
+}
+
+.login-link {
+  color: #f97316;
+  cursor: pointer;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.login-link:hover {
+  color: #fb923c;
+}
+
+/* Logos deportivos animados */
+.login-header-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.ball-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 0.75rem;
+  height: 64px;
+}
+
+.ball {
+  width: 50px;
+  height: 50px;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.45));
+}
+
+.soccer-ball {
+  animation: spin 8s infinite linear, float 3s infinite ease-in-out;
+}
+
+.wally-ball {
+  animation: bounceBall 2.2s infinite ease-in-out, float 3s infinite ease-in-out 1.5s;
+}
+
+.logo-brand {
+  font-size: 1.8rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  margin: 0;
+  color: #ffffff;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.logo-number {
+  color: #ffffff;
+  background: #f97316;
+  padding: 0.1rem 0.6rem;
+  border-radius: 8px;
+  font-size: 1.5rem;
+  display: inline-block;
+  margin-left: 0.2rem;
+  transform: skewX(-12deg);
+  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.5);
+  font-style: italic;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes bounceBall {
+  0%, 100% { transform: scaleY(1) translateY(0); }
+  45% { transform: scaleY(1) translateY(-16px); }
+  50% { transform: scaleY(0.9) translateY(0); }
+  55% { transform: scaleY(1) translateY(0); }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes loginFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

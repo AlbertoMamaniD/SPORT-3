@@ -1,0 +1,134 @@
+/* TAB MIS RESERVAS */
+.tab-reservas-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.reservas-section-title {
+  margin-top: 0;
+  margin-bottom: 2rem;
+  font-size: 1.6rem;
+}
+
+.reservas-list-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.reserva-card-item {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1.5px solid rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  transition: all 0.3s ease;
+}
+
+.reserva-card-item:hover {
+  border-color: rgba(249, 115, 22, 0.25);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.reserva-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.reserva-card-top h3 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.reserva-status-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  text-transform: uppercase;
+}
+
+.reserva-status-badge.confirmada {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.reserva-status-badge.pendiente {
+  background: rgba(249, 115, 22, 0.15);
+  color: #fb923c;
+  border: 1px solid rgba(249, 115, 22, 0.3);
+}
+
+.reserva-status-badge.cancelada {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.reserva-card-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.reserva-detail-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #cbd5e1;
+}
+
+.reserva-total-price {
+  color: #fb923c;
+  font-weight: 600;
+}
+
+.reserva-actions-footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 1rem;
+}
+
+.btn-action-extend, .btn-action-cancel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.55rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.btn-action-extend {
+  background: rgba(249, 115, 22, 0.15);
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  color: #fb923c;
+}
+
+.btn-action-extend:hover {
+  background: #f97316;
+  color: #ffffff;
+}
+
+.btn-action-cancel {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
+}
+
+.btn-action-cancel:hover {
+  background: #ef4444;
+  color: #ffffff;
+}

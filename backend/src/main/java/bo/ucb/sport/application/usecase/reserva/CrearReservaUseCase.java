@@ -77,7 +77,7 @@ public class CrearReservaUseCase {
 
         // 5. Crear pago en estado PENDIENTE (RN-16)
         MetodoPago metodo = MetodoPago.valueOf(cmd.metodoPago().toUpperCase());
-        Pago pago = Pago.crear(reserva.getId().valor(), monto, metodo);
+        Pago pago = Pago.crear(reserva.getId().valor(), monto, metodo, bo.ucb.sport.domain.model.pago.ConceptoPago.RESERVA_INICIAL);
         pagoRepository.save(pago);
 
         // 6. Notificar por SMS

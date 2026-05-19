@@ -4,7 +4,8 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
 /**
- * Entidad de dominio — Pago asociado a una reserva (relación 1:1).
+ * Entidad de dominio — Pago asociado a una reserva.
+ * Permite múltiples pagos por reserva: RESERVA_INICIAL + AMPLIACION.
  */
 public class Pago {
 
@@ -13,6 +14,8 @@ public class Pago {
     private BigDecimal monto;
     private MetodoPago metodo;
     private EstadoPago estado;
+    private ConceptoPago concepto;
+    private String urlComprobante;
     private String referencia;
     private OffsetDateTime fechaPago;
     private OffsetDateTime createdAt;
@@ -20,13 +23,14 @@ public class Pago {
 
     private Pago() {}
 
-    public static Pago crear(Long reservaId, BigDecimal monto, MetodoPago metodo) {
+    public static Pago crear(Long reservaId, BigDecimal monto, MetodoPago metodo, ConceptoPago concepto) {
         if (monto == null || monto.compareTo(BigDecimal.ZERO) < 0)
             throw new IllegalArgumentException("El monto no puede ser negativo");
         Pago p = new Pago();
         p.reservaId = reservaId;
         p.monto = monto;
         p.metodo = metodo;
+        p.concepto = concepto;
         p.estado = EstadoPago.PENDIENTE;
         p.createdAt = OffsetDateTime.now();
         p.updatedAt = OffsetDateTime.now();
@@ -35,6 +39,7 @@ public class Pago {
 
     public static Pago reconstituir(Long id, Long reservaId, BigDecimal monto,
                                      MetodoPago metodo, EstadoPago estado,
+                                     ConceptoPago concepto, String urlComprobante,
                                      String referencia, OffsetDateTime fechaPago,
                                      OffsetDateTime createdAt, OffsetDateTime updatedAt) {
         Pago p = new Pago();
@@ -43,6 +48,8 @@ public class Pago {
         p.monto = monto;
         p.metodo = metodo;
         p.estado = estado;
+        p.concepto = concepto;
+        p.urlComprobante = urlComprobante;
         p.referencia = referencia;
         p.fechaPago = fechaPago;
         p.createdAt = createdAt;
@@ -50,9 +57,11 @@ public class Pago {
         return p;
     }
 
-    public void completar(String referencia) {
+    public void completar(String urlComprobante, String referencia) {
         this.estado = EstadoPago.COMPLETADO;
+        this.urlComprobante = urlComprobante;
         this.referencia = referencia;
+        this.metodo = MetodoPago.ONLINE;
         this.fechaPago = OffsetDateTime.now();
         this.updatedAt = OffsetDateTime.now();
     }
@@ -73,6 +82,8 @@ public class Pago {
     public BigDecimal getMonto() { return monto; }
     public MetodoPago getMetodo() { return metodo; }
     public EstadoPago getEstado() { return estado; }
+    public ConceptoPago getConcepto() { return concepto; }
+    public String getUrlComprobante() { return urlComprobante; }
     public String getReferencia() { return referencia; }
     public OffsetDateTime getFechaPago() { return fechaPago; }
     public OffsetDateTime getCreatedAt() { return createdAt; }

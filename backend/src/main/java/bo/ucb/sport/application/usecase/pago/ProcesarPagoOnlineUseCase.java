@@ -33,7 +33,7 @@ public class ProcesarPagoOnlineUseCase {
         boolean exitoso = pagoOnlinePort.procesarPago(reservaId, referencia, pago.getMonto());
 
         if (exitoso) {
-            pago.completar(referencia);
+            pago.completar(null, referencia);
             Reserva reserva = reservaRepository.findById(new ReservaId(reservaId))
                     .orElseThrow(() -> new ReservaNoEncontradaException("Reserva no encontrada: " + reservaId));
             reserva.confirmar();

@@ -86,4 +86,16 @@ public class AdminController {
         configurarPrecio.execute(cmd);
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("mensaje", "Precio configurado correctamente"));
     }
+
+    @PostMapping("/reservas/{id}/confirmar")
+    public ResponseEntity<Map<String, String>> confirmarReserva(@PathVariable Long id) {
+        bo.ucb.sport.domain.model.reserva.Reserva reserva = reservaRepository.findById(new bo.ucb.sport.domain.model.reserva.ReservaId(id))
+                .orElseThrow(() -> new bo.ucb.sport.domain.exception.ReservaNoEncontradaException("Reserva no encontrada: " + id));
+        reserva.confirmar();
+        reservaRepository.save(reserva);
+        return ResponseEntity.ok(Map.of(
+                "mensaje", "Reserva confirmada correctamente",
+                "estado", reserva.getEstado().name()
+        ));
+    }
 }

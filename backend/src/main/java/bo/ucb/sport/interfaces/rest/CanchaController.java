@@ -37,7 +37,7 @@ public class CanchaController {
             @PathVariable Long id,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha) {
         var slots = disponibilidadUseCase.execute(id, fecha).stream()
-                .map(s -> new SlotHorarioResponse(s.horaInicio(), s.horaFin(), s.disponible(), s.precio()))
+                .map(s -> new SlotHorarioResponse(s.horaInicio(), s.horaFin(), s.disponible(), s.precio(), s.expirado()))
                 .toList();
         return ResponseEntity.ok(slots);
     }

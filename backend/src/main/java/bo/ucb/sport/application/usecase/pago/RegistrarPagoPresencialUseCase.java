@@ -26,7 +26,7 @@ public class RegistrarPagoPresencialUseCase {
         Pago pago = pagoRepository.findByReservaId(reservaId)
                 .orElseThrow(() -> new ReservaNoEncontradaException("Pago no encontrado para reserva: " + reservaId));
 
-        pago.completar(null);
+        pago.completar(null, null);
         pagoRepository.save(pago);
 
         // Confirmar la reserva

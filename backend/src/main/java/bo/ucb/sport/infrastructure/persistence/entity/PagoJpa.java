@@ -19,7 +19,7 @@ public class PagoJpa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "reserva_id", nullable = false, unique = true)
+    @Column(name = "reserva_id", nullable = false)
     private Long reservaId;
 
     @Column(nullable = false, precision = 10, scale = 2)
@@ -33,6 +33,13 @@ public class PagoJpa {
     @Enumerated(EnumType.STRING)
     private EstadoPagoJpa estado;
 
+    @Column(nullable = false, length = 20)
+    @Enumerated(EnumType.STRING)
+    private ConceptoPagoJpa concepto;
+
+    @Column(name = "url_comprobante", length = 500)
+    private String urlComprobante;
+
     @Column(length = 255)
     private String referencia;
 
@@ -45,6 +52,7 @@ public class PagoJpa {
     @Column(name = "updated_at", nullable = false)
     private OffsetDateTime updatedAt;
 
-    public enum MetodoPagoJpa { ONLINE, PRESENCIAL }
-    public enum EstadoPagoJpa { PENDIENTE, COMPLETADO, RECHAZADO, REEMBOLSADO }
+    public enum MetodoPagoJpa   { ONLINE, PRESENCIAL }
+    public enum EstadoPagoJpa   { PENDIENTE, COMPLETADO, RECHAZADO, REEMBOLSADO }
+    public enum ConceptoPagoJpa { RESERVA_INICIAL, AMPLIACION }
 }

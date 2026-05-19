@@ -40,7 +40,7 @@ public class ConsultarDisponibilidadUseCase {
         this.calculadorPrecio = calculadorPrecio;
     }
 
-    public record SlotDto(LocalTime horaInicio, LocalTime horaFin, boolean disponible, BigDecimal precio) {}
+    public record SlotDto(LocalTime horaInicio, LocalTime horaFin, boolean disponible, BigDecimal precio, boolean expirado) {}
 
     public List<SlotDto> execute(Long canchaId, LocalDate fecha) {
         List<Reserva> reservasActivas = reservaRepository.findActivasByCanchaIdAndFecha(canchaId, fecha);
@@ -55,12 +55,17 @@ public class ConsultarDisponibilidadUseCase {
             FranjaHoraria slot = new FranjaHoraria(cursor, slotFin);
             boolean ocupado = reservasActivas.stream()
                     .anyMatch(r -> r.getFranja().seSolapa(slot));
+            
+            // Si es hoy, las horas pasadas se marcan como expiradas (no disponibles)
+            boolean pasado = fecha.isEqual(LocalDate.now()) && cursor.isBefore(LocalTime.now());
+            boolean disponibleFinal = !ocupado && !pasado;
+
             BigDecimal precio = BigDecimal.ZERO;
             if (!precios.isEmpty()) {
                 FranjaHoraria franjaUnaHora = new FranjaHoraria(cursor, cursor.plusHours(1));
                 precio = calculadorPrecio.calcular(precios, fecha, franjaUnaHora);
             }
-            slots.add(new SlotDto(cursor, slotFin, !ocupado, precio));
+            slots.add(new SlotDto(cursor, slotFin, disponibleFinal, precio, pasado));
             cursor = slotFin;
         }
         return slots;

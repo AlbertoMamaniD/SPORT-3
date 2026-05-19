@@ -58,7 +58,7 @@ public class ProcesarPagoOnlineUseCaseTest {
 
         // Assert
         assertNotNull(resultado);
-        verify(pago, times(1)).completar(referencia);
+        verify(pago, times(1)).completar(null, referencia);
         verify(reserva, times(1)).confirmar();
         verify(reservaRepository, times(1)).save(reserva);
         verify(pagoRepository, times(1)).save(pago);

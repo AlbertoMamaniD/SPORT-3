@@ -18,7 +18,8 @@ public class Usuario {
     private OffsetDateTime updatedAt;
 
     // Constructor privado para uso interno y mappers
-    private Usuario() {}
+    private Usuario() {
+    }
 
     /** Factory method para crear un nuevo usuario no verificado. */
     public static Usuario registrar(String nombre, Telefono telefono) {
@@ -37,8 +38,8 @@ public class Usuario {
 
     /** Factory method para reconstruir desde persistencia (mapper). */
     public static Usuario reconstituir(Long id, String nombre, Telefono telefono,
-                                       RolUsuario rol, boolean verificado, boolean activo,
-                                       OffsetDateTime createdAt, OffsetDateTime updatedAt) {
+            RolUsuario rol, boolean verificado, boolean activo,
+            OffsetDateTime createdAt, OffsetDateTime updatedAt) {
         Usuario u = new Usuario();
         u.id = id;
         u.nombre = nombre;
@@ -62,12 +63,35 @@ public class Usuario {
     }
 
     // Getters
-    public Long getId() { return id; }
-    public String getNombre() { return nombre; }
-    public Telefono getTelefono() { return telefono; }
-    public RolUsuario getRol() { return rol; }
-    public boolean isVerificado() { return verificado; }
-    public boolean isActivo() { return activo; }
-    public OffsetDateTime getCreatedAt() { return createdAt; }
-    public OffsetDateTime getUpdatedAt() { return updatedAt; }
+    public Long getId() {
+        return id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public Telefono getTelefono() {
+        return telefono;
+    }
+
+    public RolUsuario getRol() {
+        return rol;
+    }
+
+    public boolean isVerificado() {
+        return verificado;
+    }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public OffsetDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public OffsetDateTime getUpdatedAt() {
+        return updatedAt;
+    }
 }

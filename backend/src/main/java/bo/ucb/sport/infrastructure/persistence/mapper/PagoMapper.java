@@ -1,5 +1,6 @@
 package bo.ucb.sport.infrastructure.persistence.mapper;
 
+import bo.ucb.sport.domain.model.pago.ConceptoPago;
 import bo.ucb.sport.domain.model.pago.EstadoPago;
 import bo.ucb.sport.domain.model.pago.MetodoPago;
 import bo.ucb.sport.domain.model.pago.Pago;
@@ -16,6 +17,8 @@ public class PagoMapper {
                 jpa.getMonto(),
                 MetodoPago.valueOf(jpa.getMetodo().name()),
                 EstadoPago.valueOf(jpa.getEstado().name()),
+                jpa.getConcepto() != null ? ConceptoPago.valueOf(jpa.getConcepto().name()) : ConceptoPago.RESERVA_INICIAL,
+                jpa.getUrlComprobante(),
                 jpa.getReferencia(),
                 jpa.getFechaPago(),
                 jpa.getCreatedAt(),
@@ -30,6 +33,8 @@ public class PagoMapper {
         jpa.setMonto(domain.getMonto());
         jpa.setMetodo(PagoJpa.MetodoPagoJpa.valueOf(domain.getMetodo().name()));
         jpa.setEstado(PagoJpa.EstadoPagoJpa.valueOf(domain.getEstado().name()));
+        jpa.setConcepto(PagoJpa.ConceptoPagoJpa.valueOf(domain.getConcepto() != null ? domain.getConcepto().name() : ConceptoPago.RESERVA_INICIAL.name()));
+        jpa.setUrlComprobante(domain.getUrlComprobante());
         jpa.setReferencia(domain.getReferencia());
         jpa.setFechaPago(domain.getFechaPago());
         jpa.setCreatedAt(domain.getCreatedAt());

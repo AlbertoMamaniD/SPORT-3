@@ -1,7 +1,9 @@
 package bo.ucb.sport.infrastructure.persistence.repository;
 
+import bo.ucb.sport.domain.model.pago.ConceptoPago;
 import bo.ucb.sport.domain.model.pago.Pago;
 import bo.ucb.sport.domain.repository.PagoRepository;
+import bo.ucb.sport.infrastructure.persistence.entity.PagoJpa;
 import bo.ucb.sport.infrastructure.persistence.jpa.PagoJpaRepository;
 import bo.ucb.sport.infrastructure.persistence.mapper.PagoMapper;
 import org.springframework.stereotype.Repository;
@@ -27,5 +29,11 @@ public class PagoRepositoryImpl implements PagoRepository {
     @Override
     public Optional<Pago> findByReservaId(Long reservaId) {
         return jpa.findByReservaId(reservaId).map(mapper::toDomain);
+    }
+
+    @Override
+    public Optional<Pago> findByReservaIdAndConcepto(Long reservaId, ConceptoPago concepto) {
+        PagoJpa.ConceptoPagoJpa jpaConcepto = PagoJpa.ConceptoPagoJpa.valueOf(concepto.name());
+        return jpa.findByReservaIdAndConcepto(reservaId, jpaConcepto).map(mapper::toDomain);
     }
 }

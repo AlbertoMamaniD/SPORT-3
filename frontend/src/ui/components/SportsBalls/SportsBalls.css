@@ -1,0 +1,105 @@
+/* Contenedores de balones flotantes a los lados */
+.sports-balls-container {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 25%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.soccer-side {
+  left: 2%;
+}
+
+.wally-side {
+  right: 2%;
+}
+
+@media (max-width: 1024px) {
+  .sports-balls-container {
+    display: none; /* Ocultar en tablets y móviles para que no se superpongan */
+  }
+}
+
+.animated-ball {
+  position: absolute;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.45));
+  opacity: 0.85;
+}
+
+/* Balones de fútbol - Posiciones y animaciones personalizadas */
+.soccer-side .ball-1 { width: 55px; height: 55px; left: 10%; top: 15%; animation: floatSoccer1 9s infinite alternate ease-in-out; }
+.soccer-side .ball-2 { width: 35px; height: 35px; left: 65%; top: 30%; animation: floatSoccer2 12s infinite alternate ease-in-out; opacity: 0.65; }
+.soccer-side .ball-3 { width: 45px; height: 45px; left: 20%; top: 55%; animation: floatSoccer3 10s infinite alternate ease-in-out; }
+.soccer-side .ball-4 { width: 30px; height: 30px; left: 75%; top: 75%; animation: floatSoccer4 14s infinite alternate ease-in-out; opacity: 0.55; }
+.soccer-side .ball-5 { width: 50px; height: 50px; left: 30%; top: 85%; animation: floatSoccer5 11s infinite alternate ease-in-out; }
+
+/* Balones de wally - Posiciones y animaciones personalizadas */
+.wally-side .ball-1 { width: 55px; height: 55px; right: 10%; top: 15%; animation: floatWally1 10s infinite alternate ease-in-out; }
+.wally-side .ball-2 { width: 35px; height: 35px; right: 65%; top: 35%; animation: floatWally2 13s infinite alternate ease-in-out; opacity: 0.65; }
+.wally-side .ball-3 { width: 45px; height: 45px; right: 20%; top: 50%; animation: floatWally3 11s infinite alternate ease-in-out; }
+.wally-side .ball-4 { width: 30px; height: 30px; right: 75%; top: 70%; animation: floatWally4 15s infinite alternate ease-in-out; opacity: 0.55; }
+.wally-side .ball-5 { width: 50px; height: 50px; right: 30%; top: 80%; animation: floatWally5 12s infinite alternate ease-in-out; }
+
+/* Keyframes de animación individual de transformaciones */
+@keyframes floatSoccer1 {
+  0% { transform: translateY(0) translateX(0) rotate(0deg) scale(1); }
+  50% { transform: translateY(-20px) translateX(15px) rotate(180deg) scale(1.05); }
+  100% { transform: translateY(30px) translateX(-10px) rotate(360deg) scale(0.95); }
+}
+
+@keyframes floatSoccer2 {
+  0% { transform: translateY(0) translateX(0) rotate(0deg); }
+  50% { transform: translateY(20px) translateX(-25px) rotate(-120deg); }
+  100% { transform: translateY(-15px) translateX(15px) rotate(-240deg); }
+}
+
+@keyframes floatSoccer3 {
+  0% { transform: translateY(0) translateX(0) rotate(0deg); }
+  50% { transform: translateY(15px) translateX(30px) rotate(140deg); }
+  100% { transform: translateY(-25px) translateX(-15px) rotate(280deg); }
+}
+
+@keyframes floatSoccer4 {
+  0% { transform: translateY(0) translateX(0) rotate(0deg); }
+  50% { transform: translateY(-30px) translateX(-15px) rotate(-180deg); }
+  100% { transform: translateY(15px) translateX(25px) rotate(-360deg); }
+}
+
+@keyframes floatSoccer5 {
+  0% { transform: translateY(0) translateX(0) rotate(0deg); }
+  50% { transform: translateY(-10px) translateX(20px) rotate(90deg); }
+  100% { transform: translateY(20px) translateX(-20px) rotate(180deg); }
+}
+
+/* Keyframes de wally */
+@keyframes floatWally1 {
+  0% { transform: translateY(0) translateX(0) rotate(0deg) scale(1); }
+  50% { transform: translateY(25px) translateX(-15px) rotate(-180deg) scale(1.05); }
+  100% { transform: translateY(-20px) translateX(10px) rotate(-360deg) scale(0.95); }
+}
+
+@keyframes floatWally2 {
+  0% { transform: translateY(0) translateX(0) rotate(0deg); }
+  50% { transform: translateY(-20px) translateX(20px) rotate(120deg); }
+  100% { transform: translateY(15px) translateX(-15px) rotate(240deg); }
+}
+
+@keyframes floatWally3 {
+  0% { transform: translateY(0) translateX(0) rotate(0deg); }
+  50% { transform: translateY(-15px) translateX(-25px) rotate(-140deg); }
+  100% { transform: translateY(25px) translateX(15px) rotate(-280deg); }
+}
+
+@keyframes floatWally4 {
+  0% { transform: translateY(0) translateX(0) rotate(0deg); }
+  50% { transform: translateY(25px) translateX(15px) rotate(180deg); }
+  100% { transform: translateY(-15px) translateX(-25px) rotate(360deg); }
+}
+
+@keyframes floatWally5 {
+  0% { transform: translateY(0) translateX(0) rotate(0deg); }
+  50% { transform: translateY(10px) translateX(-20px) rotate(-90deg); }
+  100% { transform: translateY(-20px) translateX(20px) rotate(-180deg); }
+}

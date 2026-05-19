@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface PagoJpaRepository extends JpaRepository<PagoJpa, Long> {
     Optional<PagoJpa> findByReservaId(Long reservaId);
+    Optional<PagoJpa> findByReservaIdAndConcepto(Long reservaId, PagoJpa.ConceptoPagoJpa concepto);
 }

@@ -2,11 +2,23 @@ package bo.ucb.sport.interfaces.rest;
 
 import bo.ucb.sport.application.usecase.pago.ProcesarPagoOnlineUseCase;
 import bo.ucb.sport.application.usecase.pago.RegistrarPagoPresencialUseCase;
+import bo.ucb.sport.application.usecase.pago.SubirComprobanteUseCase;
+import bo.ucb.sport.domain.model.pago.ConceptoPago;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.HttpEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.core.io.ByteArrayResource;
 
 @RestController
 @RequestMapping("/api/pagos")
@@ -14,11 +26,14 @@ public class PagoController {
 
     private final ProcesarPagoOnlineUseCase pagoOnline;
     private final RegistrarPagoPresencialUseCase pagoPresencial;
+    private final SubirComprobanteUseCase subirComprobanteUseCase;
 
     public PagoController(ProcesarPagoOnlineUseCase pagoOnline,
-                           RegistrarPagoPresencialUseCase pagoPresencial) {
+                           RegistrarPagoPresencialUseCase pagoPresencial,
+                           SubirComprobanteUseCase subirComprobanteUseCase) {
         this.pagoOnline = pagoOnline;
         this.pagoPresencial = pagoPresencial;
+        this.subirComprobanteUseCase = subirComprobanteUseCase;
     }
 
     @PostMapping("/online")
@@ -34,5 +49,65 @@ public class PagoController {
     public ResponseEntity<Map<String, String>> pagoPresencial(@RequestParam Long reservaId) {
         var pago = pagoPresencial.execute(reservaId);
         return ResponseEntity.ok(Map.of("estado", pago.getEstado().name()));
+    }
+
+    @PostMapping("/{reservaId}/comprobante")
+    public ResponseEntity<Map<String, String>> subirComprobante(
+            @PathVariable Long reservaId,
+            @RequestParam("file") MultipartFile file,
+            @RequestParam(value = "concepto", defaultValue = "RESERVA_INICIAL") String conceptoStr) {
+        
+        if (file.isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of("mensaje", "El archivo no puede estar vacío"));
+        }
+
+        try {
+            String cloudName = System.getProperty("CLOUDINARY_CLOUD_NAME");
+            String uploadPreset = System.getProperty("CLOUDINARY_UPLOAD_PRESET");
+
+            if (cloudName == null || cloudName.isEmpty() || uploadPreset == null || uploadPreset.isEmpty()) {
+                throw new IllegalStateException("Las credenciales de Cloudinary no están configuradas en el entorno.");
+            }
+
+            // Subir a Cloudinary usando RestTemplate
+            RestTemplate restTemplate = new RestTemplate();
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+            LinkedMultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+            body.add("file", new ByteArrayResource(file.getBytes()) {
+                @Override
+                public String getFilename() {
+                    return file.getOriginalFilename();
+                }
+            });
+            body.add("upload_preset", uploadPreset);
+
+            HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+            String cloudinaryUrl = "https://api.cloudinary.com/v1_1/" + cloudName + "/image/upload";
+
+            @SuppressWarnings("unchecked")
+            Map<String, Object> response = restTemplate.postForObject(cloudinaryUrl, requestEntity, Map.class);
+
+            if (response == null || !response.containsKey("secure_url")) {
+                throw new IOException("No se pudo obtener la URL de Cloudinary de la respuesta.");
+            }
+
+            String urlComprobante = (String) response.get("secure_url");
+
+            ConceptoPago concepto = ConceptoPago.valueOf(conceptoStr.toUpperCase());
+            var pago = subirComprobanteUseCase.execute(reservaId, concepto, urlComprobante);
+
+            return ResponseEntity.ok(Map.of(
+                    "estado", pago.getEstado().name(),
+                    "urlComprobante", urlComprobante
+            ));
+
+        } catch (IOException | IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("mensaje", "Error al guardar el comprobante: " + e.getMessage()));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("mensaje", "Concepto de pago inválido"));
+        }
     }
 }

@@ -40,8 +40,7 @@ public class TwilioSmsAdapter implements SmsPort {
             Message.creator(
                     new PhoneNumber(telefono),
                     new PhoneNumber(phoneNumber),
-                    "Tu código SPORT es: " + codigo + ". Expira en 5 minutos."
-            ).create();
+                    "Tu código SPORT es: " + codigo + ". Expira en 5 minutos.").create();
             log.info("OTP enviado a {}", telefono);
         } catch (Exception e) {
             log.error("Error al enviar OTP a {}: {}", telefono, e.getMessage());
@@ -55,8 +54,7 @@ public class TwilioSmsAdapter implements SmsPort {
             Message.creator(
                     new PhoneNumber(telefono),
                     new PhoneNumber(phoneNumber),
-                    mensaje
-            ).create();
+                    mensaje).create();
         } catch (Exception e) {
             log.error("Error al enviar confirmación a {}: {}", telefono, e.getMessage());
         }
