@@ -1,0 +1,31 @@
+# Environment variables (contains sensitive keys)
+.env
+.env.local
+.env.*.local
+backend/.env
+frontend/.env
+
+# IDE / Editors
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Build and Dependency directories
+node_modules/
+target/
+build/
+bin/
+out/
+dist/
+dist-ssr/
+
+# Logs
+*.log
+logs/
+boot.log
