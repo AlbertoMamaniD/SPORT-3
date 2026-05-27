@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface PagoJpaRepository extends JpaRepository<PagoJpa, Long> {
-    Optional<PagoJpa> findByReservaId(Long reservaId);
-    Optional<PagoJpa> findByReservaIdAndConcepto(Long reservaId, PagoJpa.ConceptoPagoJpa concepto);
+    Optional<PagoJpa> findFirstByReservaIdOrderByCreatedAtDesc(Long reservaId);
+    Optional<PagoJpa> findFirstByReservaIdAndConceptoOrderByCreatedAtDesc(Long reservaId, PagoJpa.ConceptoPagoJpa concepto);
 }

@@ -11,6 +11,7 @@ import java.util.List;
 public interface PrecioJpaRepository extends JpaRepository<PrecioJpa, Long> {
 
     List<PrecioJpa> findByCanchaIdAndVigenteTrue(Long canchaId);
+    List<PrecioJpa> findByVigenteTrue();
 
     @Modifying
     @Query("UPDATE PrecioJpa p SET p.vigente = false WHERE p.canchaId = :canchaId")

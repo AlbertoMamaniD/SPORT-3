@@ -31,7 +31,18 @@ public class PrecioRepositoryImpl implements PrecioRepository {
     }
 
     @Override
+    public List<Precio> findAllVigentes() {
+        return jpa.findByVigenteTrue().stream()
+                .map(mapper::toDomain).toList();
+    }
+
+    @Override
     public void invalidarPorCanchaId(Long canchaId) {
         jpa.invalidarPorCanchaId(canchaId);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        jpa.deleteById(id);
     }
 }

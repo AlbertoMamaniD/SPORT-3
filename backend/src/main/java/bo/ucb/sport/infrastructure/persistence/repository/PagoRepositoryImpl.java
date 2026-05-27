@@ -28,12 +28,12 @@ public class PagoRepositoryImpl implements PagoRepository {
 
     @Override
     public Optional<Pago> findByReservaId(Long reservaId) {
-        return jpa.findByReservaId(reservaId).map(mapper::toDomain);
+        return jpa.findFirstByReservaIdOrderByCreatedAtDesc(reservaId).map(mapper::toDomain);
     }
 
     @Override
     public Optional<Pago> findByReservaIdAndConcepto(Long reservaId, ConceptoPago concepto) {
         PagoJpa.ConceptoPagoJpa jpaConcepto = PagoJpa.ConceptoPagoJpa.valueOf(concepto.name());
-        return jpa.findByReservaIdAndConcepto(reservaId, jpaConcepto).map(mapper::toDomain);
+        return jpa.findFirstByReservaIdAndConceptoOrderByCreatedAtDesc(reservaId, jpaConcepto).map(mapper::toDomain);
     }
 }

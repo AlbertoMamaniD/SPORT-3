@@ -14,4 +14,5 @@ public interface ReservaRepository {
     List<Reserva> findByUsuarioId(Long usuarioId);
     List<Reserva> findActivasByCanchaIdAndFecha(Long canchaId, LocalDate fecha);
     boolean existeSolapamiento(Long canchaId, LocalDate fecha, FranjaHoraria franja);
+    List<Reserva> findAll();
 }

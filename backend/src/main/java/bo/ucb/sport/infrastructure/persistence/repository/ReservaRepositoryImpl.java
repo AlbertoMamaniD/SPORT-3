@@ -49,4 +49,10 @@ public class ReservaRepositoryImpl implements ReservaRepository {
     public boolean existeSolapamiento(Long canchaId, LocalDate fecha, FranjaHoraria franja) {
         return jpa.existeSolapamiento(canchaId, fecha, franja.inicio(), franja.fin());
     }
+
+    @Override
+    public List<Reserva> findAll() {
+        return jpa.findAll().stream()
+                .map(mapper::toDomain).toList();
+    }
 }

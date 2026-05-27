@@ -19,10 +19,17 @@ import org.springframework.http.MediaType;
 import org.springframework.http.HttpEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.beans.factory.annotation.Value;
 
 @RestController
 @RequestMapping("/api/pagos")
 public class PagoController {
+
+    @Value("${cloudinary.cloud-name}")
+    private String cloudName;
+
+    @Value("${cloudinary.upload-preset}")
+    private String uploadPreset;
 
     private final ProcesarPagoOnlineUseCase pagoOnline;
     private final RegistrarPagoPresencialUseCase pagoPresencial;
@@ -61,14 +68,12 @@ public class PagoController {
             return ResponseEntity.badRequest().body(Map.of("mensaje", "El archivo no puede estar vacío"));
         }
 
+        if (cloudName == null || cloudName.trim().isEmpty() || uploadPreset == null || uploadPreset.trim().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("mensaje", "Error: Las credenciales de Cloudinary no están configuradas en el servidor."));
+        }
+
         try {
-            String cloudName = System.getProperty("CLOUDINARY_CLOUD_NAME");
-            String uploadPreset = System.getProperty("CLOUDINARY_UPLOAD_PRESET");
-
-            if (cloudName == null || cloudName.isEmpty() || uploadPreset == null || uploadPreset.isEmpty()) {
-                throw new IllegalStateException("Las credenciales de Cloudinary no están configuradas en el entorno.");
-            }
-
             // Subir a Cloudinary usando RestTemplate
             RestTemplate restTemplate = new RestTemplate();
             HttpHeaders headers = new HttpHeaders();
@@ -105,7 +110,7 @@ public class PagoController {
 
         } catch (IOException | IllegalStateException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("mensaje", "Error al guardar el comprobante: " + e.getMessage()));
+                    .body(Map.of("mensaje", "Error al subir comprobante a Cloudinary: " + e.getMessage()));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(Map.of("mensaje", "Concepto de pago inválido"));
         }

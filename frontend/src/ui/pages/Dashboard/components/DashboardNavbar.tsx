@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { LogOut, Menu, X, User } from 'lucide-react';
 import './DashboardNavbar.css';
 
@@ -25,6 +26,8 @@ export const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
   setMobileMenuOpen,
   handleLogoutClick
 }) => {
+  const navigate = useNavigate();
+
   return (
     <header className="dashboard-navbar">
       <div className="navbar-container">
@@ -53,10 +56,18 @@ export const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
           >
             Mis Reservas
           </button>
+          {user.rol === 'ADMIN' && (
+            <button 
+              className="nav-item-btn"
+              onClick={() => navigate('/admin')}
+              style={{ color: '#f97316', fontWeight: 'bold' }}
+            >
+              Panel Admin
+            </button>
+          )}
         </nav>
 
-        {/* Perfil & Logout */}
-        <div className="navbar-profile-desktop">
+        <div className="navbar-profile-section">
           <div className="profile-badge-info">
             <User size={14} />
             <span>{user.nombre}</span>
@@ -94,6 +105,15 @@ export const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
           >
             Mis Reservas
           </button>
+          {user.rol === 'ADMIN' && (
+            <button 
+              className="mobile-nav-btn"
+              onClick={() => { navigate('/admin'); setMobileMenuOpen(false); }}
+              style={{ color: '#f97316', fontWeight: 'bold' }}
+            >
+              Panel Admin
+            </button>
+          )}
           <div className="mobile-profile-section">
             <p className="mobile-profile-name">{user.nombre} ({user.rol})</p>
             <button className="mobile-logout-btn" onClick={handleLogoutClick}>
