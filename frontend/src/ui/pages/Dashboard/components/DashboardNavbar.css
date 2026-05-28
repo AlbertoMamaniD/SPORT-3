@@ -83,12 +83,21 @@
 .profile-badge-info {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  background: rgba(30, 41, 59, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 0.4rem 0.85rem;
+  gap: 8px;
+
+  padding: 10px 14px;
+
   border-radius: 999px;
-  font-size: 0.85rem;
+
+  background: rgba(17, 24, 39, 0.85);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  color: white;
+
+  font-weight: 700;
+
+  height: 44px;
 }
 
 .badge-role {
@@ -103,16 +112,32 @@
 }
 
 .navbar-logout-btn {
-  background: rgba(239, 68, 68, 0.15);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  color: #f87171;
-  padding: 0.5rem;
-  border-radius: 8px;
-  cursor: pointer;
+  width: 44px;
+  height: 44px;
+
+  border-radius: 14px;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
+
+  background: rgba(251, 113, 133, 0.12);
+
+  border: 1px solid rgba(251, 113, 133, 0.22);
+
+  color: #fb7185;
+
+  cursor: pointer;
+
+  transition: 0.25s ease;
+
+  flex-shrink: 0;
+}
+
+.navbar-logout-btn:hover {
+  transform: translateY(-2px);
+
+  background: rgba(251, 113, 133, 0.18);
 }
 
 .navbar-logout-btn:hover {
@@ -159,10 +184,12 @@
   color: #ffffff;
 }
 
-.mobile-profile-section {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding-top: 1rem;
-  margin-top: 0.5rem;
+.navbar-profile-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  flex-direction: row;
 }
 
 .mobile-profile-name {
@@ -186,10 +213,179 @@
 }
 
 @media (max-width: 768px) {
-  .navbar-links-desktop, .navbar-profile-desktop {
+
+  .navbar-links-desktop,
+  .navbar-profile-desktop {
     display: none;
   }
+
   .navbar-mobile-toggle {
     display: block;
   }
+}
+
+/* LOGO SPORT3 PREMIUM */
+.dashboard-brand,
+.navbar-brand,
+.brand-logo {
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+}
+
+.dashboard-brand-icon,
+.logo-icon,
+.brand-icon {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(145deg, #ffffff, #dbeafe) !important;
+  box-shadow: 0 12px 34px rgba(255, 106, 0, 0.38) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.dashboard-brand-icon::before,
+.logo-icon::before,
+.brand-icon::before {
+  content: '' !important;
+  position: absolute !important;
+  inset: 6px !important;
+  border-radius: 50% !important;
+  background: conic-gradient(from 180deg,
+      #0f172a 0deg,
+      #0f172a 70deg,
+      #facc15 70deg,
+      #facc15 150deg,
+      #60a5fa 150deg,
+      #60a5fa 250deg,
+      #ffffff 250deg,
+      #ffffff 360deg) !important;
+  border: 2px solid #0f172a !important;
+}
+
+.dashboard-brand-icon::after,
+.logo-icon::after,
+.brand-icon::after {
+  content: '' !important;
+  position: absolute !important;
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 50% !important;
+  background: #0f172a !important;
+  left: 18px !important;
+  top: 18px !important;
+}
+
+.dashboard-brand-text,
+.brand-text,
+.logo-text {
+  font-size: 26px !important;
+  font-weight: 900 !important;
+  letter-spacing: -1px !important;
+  color: #ffffff !important;
+}
+
+.dashboard-brand-text span,
+.brand-text span,
+.logo-text span {
+  color: #ff9a3d !important;
+}
+
+/* =========================
+   SPORT3 PREMIUM LOGO
+========================= */
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+}
+
+/* ICONO */
+.premium-logo-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  position: relative;
+
+  background: linear-gradient(145deg,
+      #ffffff,
+      #dbeafe);
+
+  box-shadow:
+    0 0 30px rgba(255, 106, 0, 0.35),
+    0 10px 25px rgba(0, 0, 0, 0.25);
+
+  overflow: hidden;
+
+  flex-shrink: 0;
+}
+
+/* CIRCULO INTERNO */
+.premium-logo-icon::before {
+  content: '';
+
+  position: absolute;
+  inset: 6px;
+
+  border-radius: 50%;
+
+  background:
+    conic-gradient(from 180deg,
+      #0f172a 0deg,
+      #0f172a 70deg,
+      #facc15 70deg,
+      #facc15 150deg,
+      #60a5fa 150deg,
+      #60a5fa 250deg,
+      #ffffff 250deg,
+      #ffffff 360deg);
+
+  border: 2px solid #0f172a;
+}
+
+/* PUNTO NEGRO */
+.premium-logo-icon::after {
+  content: '';
+
+  position: absolute;
+
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+
+  background: #0f172a;
+
+  left: 18px;
+  top: 18px;
+}
+
+/* TEXTO */
+.logo-text {
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -1px;
+
+  color: #ffffff;
+}
+
+.logo-highlight {
+  color: #ff9a3d;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+  .logo-text {
+    font-size: 22px;
+  }
+
+  .premium-logo-icon {
+    width: 38px;
+    height: 38px;
+  }
+
 }

@@ -32,32 +32,35 @@ export const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
     <header className="dashboard-navbar">
       <div className="navbar-container">
         <div className="navbar-logo" onClick={() => setCurrentTab('HOME')}>
-          <span className="logo-soccer-symbol">⚽</span>
-          <span className="logo-text">SPORT<span className="logo-highlight">3</span></span>
+          <div className="premium-logo-icon"></div>
+
+          <span className="logo-text">
+            SPORT<span className="logo-highlight">3</span>
+          </span>
         </div>
 
         {/* Menú Desktop */}
         <nav className="navbar-links-desktop">
-          <button 
+          <button
             className={`nav-item-btn ${currentTab === 'HOME' ? 'active' : ''}`}
             onClick={() => setCurrentTab('HOME')}
           >
             Inicio
           </button>
-          <button 
+          <button
             className={`nav-item-btn ${currentTab === 'CANCHAS' ? 'active' : ''}`}
             onClick={() => setCurrentTab('CANCHAS')}
           >
             Reservar Cancha
           </button>
-          <button 
+          <button
             className={`nav-item-btn ${currentTab === 'RESERVAS' ? 'active' : ''}`}
             onClick={() => setCurrentTab('RESERVAS')}
           >
             Mis Reservas
           </button>
           {user.rol === 'ADMIN' && (
-            <button 
+            <button
               className="nav-item-btn"
               onClick={() => navigate('/admin')}
               style={{ color: '#f97316', fontWeight: 'bold' }}
@@ -87,26 +90,26 @@ export const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
       {/* Cajón móvil */}
       {mobileMenuOpen && (
         <div className="navbar-mobile-menu">
-          <button 
+          <button
             className={`mobile-nav-btn ${currentTab === 'HOME' ? 'active' : ''}`}
             onClick={() => { setCurrentTab('HOME'); setMobileMenuOpen(false); }}
           >
             Inicio
           </button>
-          <button 
+          <button
             className={`mobile-nav-btn ${currentTab === 'CANCHAS' ? 'active' : ''}`}
             onClick={() => { setCurrentTab('CANCHAS'); setMobileMenuOpen(false); }}
           >
             Reservar Cancha
           </button>
-          <button 
+          <button
             className={`mobile-nav-btn ${currentTab === 'RESERVAS' ? 'active' : ''}`}
             onClick={() => { setCurrentTab('RESERVAS'); setMobileMenuOpen(false); }}
           >
             Mis Reservas
           </button>
           {user.rol === 'ADMIN' && (
-            <button 
+            <button
               className="mobile-nav-btn"
               onClick={() => { navigate('/admin'); setMobileMenuOpen(false); }}
               style={{ color: '#f97316', fontWeight: 'bold' }}
