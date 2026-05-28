@@ -1387,3 +1387,317 @@
     justify-content: center;
   }
 }
+
+/* =========================================================
+   SPORT3 ADMIN RESPONSIVE MOBILE PATCH
+   Pegar al final de los CSS de AdminDashboard, GestionCanchas y GestionPrecios
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .admin-premium-layout,
+  .admin-layout,
+  .app {
+    display: block !important;
+    grid-template-columns: 1fr !important;
+    min-height: 100vh !important;
+    width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  .admin-premium-sidebar,
+  .admin-sidebar,
+  .sidebar {
+    position: relative !important;
+    top: auto !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    padding: 16px !important;
+    border-right: 0 !important;
+    border-bottom: 1px solid rgba(255, 106, 0, 0.22) !important;
+    display: block !important;
+  }
+
+  .admin-premium-brand,
+  .sidebar-brand,
+  .brand {
+    margin-bottom: 18px !important;
+    justify-content: center !important;
+  }
+
+  .admin-premium-nav,
+  .sidebar-nav,
+  .nav {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    margin-bottom: 18px !important;
+  }
+
+  .admin-premium-nav button,
+  .sidebar-link,
+  .nav button {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 13px 14px !important;
+    border-radius: 16px !important;
+    transform: none !important;
+  }
+
+  .admin-premium-user-card,
+  .premium-admin-card,
+  .admin-card,
+  .sidebar-footer {
+    width: 100% !important;
+    margin-top: 14px !important;
+    padding: 16px !important;
+    border-radius: 22px !important;
+  }
+
+  .admin-premium-user-card strong,
+  .sidebar-user-name,
+  .admin-card strong {
+    font-size: 22px !important;
+  }
+
+  .admin-premium-logout,
+  .premium-logout-btn,
+  .logout-btn,
+  .sidebar-logout-btn {
+    width: 100% !important;
+    margin-top: 12px !important;
+  }
+
+  .admin-premium-main,
+  .admin-main,
+  main {
+    padding: 18px 14px 48px !important;
+    width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  .admin-premium-topbar,
+  .admin-topbar,
+  .topbar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 16px !important;
+    margin-bottom: 22px !important;
+  }
+
+  .admin-premium-eyebrow,
+  .eyebrow {
+    font-size: 11px !important;
+  }
+
+  .admin-premium-topbar h2,
+  .admin-page-title,
+  .topbar h2,
+  h2 {
+    font-size: 28px !important;
+    line-height: 1.1 !important;
+    letter-spacing: -0.8px !important;
+  }
+
+  .admin-page-subtitle,
+  .subtitle,
+  .admin-premium-topbar p {
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+  }
+
+  .refresh-area,
+  .actions {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    align-items: stretch !important;
+  }
+
+  .btn-admin-refresh,
+  .btn-admin-primary,
+  .btn,
+  .admin-premium-btn {
+    width: 100% !important;
+    justify-content: center !important;
+    min-height: 48px !important;
+  }
+
+  .update-indicator-top,
+  .admin-premium-updated,
+  .update-indicator {
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+    margin-top: 10px !important;
+  }
+
+  .admin-premium-hero,
+  .admin-stats-grid,
+  .admin-premium-kpis,
+  .admin-premium-quick,
+  .quick-actions-grid,
+  .filters,
+  .canchas-summary {
+    grid-template-columns: 1fr !important;
+    display: grid !important;
+    gap: 14px !important;
+  }
+
+  .admin-premium-hero-card,
+  .admin-premium-court-card,
+  .stats-card,
+  .quick-action-card,
+  .admin-premium-kpis article,
+  .admin-premium-quick button {
+    width: 100% !important;
+    border-radius: 22px !important;
+    padding: 18px !important;
+  }
+
+  .admin-premium-court-card {
+    min-height: 180px !important;
+  }
+
+  .admin-premium-court {
+    height: 130px !important;
+    transform: perspective(620px) rotateX(52deg) rotateZ(-8deg) scale(0.95) !important;
+  }
+
+  .admin-premium-mini-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .admin-section,
+  .admin-premium-section {
+    margin-top: 22px !important;
+  }
+
+  .admin-section-title,
+  .admin-premium-section h3 {
+    font-size: 18px !important;
+  }
+
+  .admin-table-wrapper {
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    border-radius: 18px !important;
+  }
+
+  .admin-table {
+    min-width: 760px !important;
+  }
+
+  .admin-table th,
+  .admin-table td {
+    padding: 14px 12px !important;
+    font-size: 12px !important;
+    white-space: nowrap !important;
+  }
+
+  .admin-table-actions {
+    display: flex !important;
+    gap: 8px !important;
+    justify-content: flex-start !important;
+  }
+
+  .btn-action-pago,
+  .btn-action-cancel-admin {
+    min-width: 42px !important;
+    min-height: 38px !important;
+  }
+
+  .admin-modal-backdrop {
+    padding: 12px !important;
+    align-items: flex-start !important;
+    overflow-y: auto !important;
+  }
+
+  .admin-modal-content {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 24px 0 !important;
+    border-radius: 22px !important;
+  }
+
+  .admin-modal-header,
+  .admin-modal-body,
+  .admin-modal-footer {
+    padding: 18px !important;
+  }
+
+  .admin-modal-title {
+    font-size: 20px !important;
+  }
+
+  .admin-modal-footer {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .admin-modal-footer button {
+    width: 100% !important;
+  }
+
+  .admin-form-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  .admin-input,
+  .admin-select {
+    height: 48px !important;
+    font-size: 14px !important;
+  }
+
+  .admin-alert,
+  .admin-premium-alert {
+    width: 100% !important;
+    border-radius: 16px !important;
+    font-size: 13px !important;
+    align-items: flex-start !important;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .admin-premium-logo,
+  .sport3-premium-ball,
+  .logo,
+  .admin-premium-brand .admin-premium-logo {
+    width: 38px !important;
+    height: 38px !important;
+  }
+
+  .admin-premium-brand h1,
+  .sidebar-name,
+  .brand h1 {
+    font-size: 22px !important;
+  }
+
+  .admin-premium-topbar h2,
+  .admin-page-title,
+  .topbar h2,
+  h2 {
+    font-size: 24px !important;
+  }
+
+  .admin-premium-kpis b,
+  .stats-card-value {
+    font-size: 26px !important;
+  }
+
+  .admin-premium-icon,
+  .stats-card-icon {
+    width: 44px !important;
+    height: 44px !important;
+  }
+
+  .admin-table {
+    min-width: 700px !important;
+  }
+}
