@@ -1,0 +1,89 @@
+@startuml componentes_resumido
+!theme plain
+skinparam backgroundColor #FAFAFA
+skinparam defaultFontSize 11
+skinparam package {
+    BorderColor #546E7A
+    BorderThickness 2
+    FontStyle bold
+}
+skinparam component {
+    BackgroundColor #FFFFFF
+    BorderColor #455A64
+}
+skinparam interface {
+    BackgroundColor #FFFDE7
+    BorderColor #F9A825
+}
+skinparam database {
+    BackgroundColor #E8F5E9
+    BorderColor #388E3C
+}
+skinparam arrow {
+    Color #37474F
+    FontSize 9
+}
+skinparam linetype ortho
+
+title <b>SPORT - Componentes / Arquitectura Hexagonal</b>
+
+'--- FRONTEND ---
+package "Frontend (React + Vite)" #D6EAF8 {
+    component "ui/pages\nLogin, Register, Dashboard\nAdminDashboard, GestionCanchas\nGestionPrecios" as pages
+    component "infrastructure/api\nauthService, canchaService\nreservaService, adminService\naxiosConfig + interceptor JWT" as apiSvcs
+    component "domain/model\ntypes.ts (interfaces TS)" as frontTypes
+    pages --> apiSvcs : llama
+    apiSvcs ..> frontTypes : tipado
+}
+
+'--- BACKEND ---
+package "Backend (Spring Boot 3 / Java 21)" #E8F5E9 {
+
+    package "interfaces - Adaptador Primario" #C8E6C9 {
+        component "REST Controllers\nCanchaController\nReservaController\nPagoController\nAdminController\nAuthController" as ctrls
+        component "DTOs\n(Request / Response)" as dtos
+        component "GlobalExceptionHandler" as exh
+    }
+
+    package "application - Casos de Uso" #A5D6A7 {
+        component "usecase/\nreserva, cancha, precio, pago\n(Crear, Ampliar, Cancelar\nConfigurar, Pagar, Subir)" as usecases
+        component "command/\n(CrearReservaCommand, etc.)" as cmds
+        interface "SmsPort" as smsPort
+        interface "PagoOnlinePort" as pagoPort
+    }
+
+    package "domain - Nucleo" #81C784 {
+        component "model/\nReserva (Agregado) - Cancha\nPrecio - Pago - Usuario" as models
+        interface "Repository Ports\n(Reserva, Cancha, Precio\nPago, Usuario, OtpToken)" as repoPorts
+        component "Services\nCalculadorPrecioService\nDisponibilidadService" as domSvcs
+    }
+
+    package "infrastructure - Adaptador Secundario" #A5D6A7 {
+        component "persistence/\nRepositoryImpl + Mapper\nJpaRepository + Entity" as persist
+        component "sms/\nConsoleSmsAdapter (dev)\nTwilioSmsAdapter (prod)\nPagoOnlineAdapter" as smsAdapters
+        component "config/\nWebConfig (CORS)\nDomainConfig\nSecurityConfig (JWT)" as cfg
+    }
+}
+
+database "PostgreSQL 15\n(BD: sport)" as pg
+component "Cloudinary API" as cloud #EDE7F6
+component "Twilio SMS" as twilio #EDE7F6
+
+'--- RELACIONES ---
+apiSvcs  --> ctrls     : HTTP REST
+
+ctrls    --> usecases  : delega
+usecases --> repoPorts : usa puertos
+usecases --> domSvcs   : calcula / valida
+usecases --> smsPort   : notifica
+usecases --> pagoPort  : procesa pago
+
+persist     ..|> repoPorts : implementa
+smsAdapters ..|> smsPort   : implementa
+smsAdapters ..|> pagoPort  : implementa
+
+persist     --> pg
+smsAdapters --> twilio
+ctrls       --> cloud : upload comprobante
+
+@enduml

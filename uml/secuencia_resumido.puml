@@ -1,0 +1,78 @@
+@startuml secuencia_resumido
+!theme plain
+skinparam backgroundColor #FAFAFA
+skinparam sequenceArrowThickness 2
+skinparam sequenceGroupBorderColor #2980B9
+skinparam sequenceGroupBodyBackgroundColor #EBF5FB
+skinparam sequenceParticipantBackgroundColor #D6EAF8
+skinparam sequenceParticipantBorderColor #2E86C1
+skinparam sequenceActorBorderColor #1ABC9C
+skinparam noteBorderColor #E67E22
+skinparam noteBackgroundColor #FDEBD0
+
+title <b>SPORT — Secuencia: Reserva y Pago</b>
+
+actor "Usuario" as user
+actor "Admin" as admin
+participant "React SPA" as spa #D4E6F1
+participant "CanchaController" as canchaCtrl #D5F5E3
+participant "ReservaController" as reservaCtrl #D5F5E3
+participant "PagoController" as pagoCtrl #D5F5E3
+participant "AdminController" as adminCtrl #D5F5E3
+participant "Use Cases\n(Disponibilidad\nCrearReserva)" as uc #FDEDEC
+participant "Domain Services\n(Calculador\nDisponibilidad)" as domSvc #FEF9E7
+participant "Repositories\n(JPA / PostgreSQL)" as repo #F9EBEA
+participant "Cloudinary" as cloud #F5EEF8
+
+group 1. Ver disponibilidad
+    user -> spa : Selecciona cancha y fecha
+    spa -> canchaCtrl : GET /api/canchas\nGET /api/canchas/{id}/disponibilidad
+    canchaCtrl -> uc : ConsultarDisponibilidadUseCase
+    uc -> domSvc : verificar conflictos
+    uc -> repo : consultar reservas y precios
+    repo --> canchaCtrl : slots disponibles + precios
+    canchaCtrl --> spa : List<SlotHorarioResponse>
+    spa --> user : Muestra slots con precios
+end
+
+group 2. Crear Reserva
+    user -> spa : Confirma slot y método de pago
+    spa -> reservaCtrl : POST /api/reservas\n{canchaId, fecha, horaInicio, horaFin, metodoPago}
+    reservaCtrl -> uc : CrearReservaUseCase
+    uc -> domSvc : validar disponibilidad\ncalcular precio
+    alt No disponible
+        uc --> reservaCtrl : CanchaNoDisponibleException
+        reservaCtrl --> spa : 409 Conflict
+    else Disponible
+        uc -> repo : save(Reserva{estado=PENDIENTE})
+        repo --> uc : Reserva guardada
+        reservaCtrl --> spa : 201 Created\n{id, estado=PENDIENTE, montoTotal}
+        spa --> user : "Reserva creada — Pendiente de pago"
+    end
+end
+
+group 3a. Pago Online (comprobante)
+    user -> spa : Sube imagen de comprobante
+    spa -> pagoCtrl : POST /api/pagos/{id}/comprobante\n(multipart file)
+    pagoCtrl -> cloud : upload imagen
+    cloud --> pagoCtrl : { secure_url }
+    pagoCtrl -> repo : save(Pago{url, estado=PENDIENTE})
+    pagoCtrl --> spa : 200 OK { urlComprobante }
+    spa --> user : "Esperando verificación del admin"
+end
+
+group 3b. Pago Presencial + Confirmar (Admin)
+    admin -> spa : AdminDashboard → registra pago
+    spa -> pagoCtrl : POST /api/pagos/presencial?reservaId
+    pagoCtrl -> repo : save(Pago{estado=COMPLETADO})
+    pagoCtrl --> spa : 200 OK { COMPLETADO }
+
+    admin -> spa : Confirma la reserva
+    spa -> adminCtrl : POST /api/admin/reservas/{id}/confirmar
+    adminCtrl -> repo : reserva.confirmar() → save
+    repo --> adminCtrl : estado=CONFIRMADA
+    adminCtrl --> spa : 200 OK { CONFIRMADA }
+    spa --> admin : "Reserva confirmada"
+end
+
+@enduml

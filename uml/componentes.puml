@@ -1,0 +1,297 @@
+@startuml Componentes_SPORT_Hexagonal
+!theme plain
+skinparam backgroundColor #F8F9FA
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+
+skinparam package {
+    BackgroundColor #ECEFF1
+    BorderColor     #546E7A
+    BorderThickness 2
+    FontStyle bold
+    FontSize 12
+}
+skinparam component {
+    BackgroundColor #FFFFFF
+    BorderColor     #455A64
+    BorderThickness 1
+    FontSize 10
+}
+skinparam interface {
+    BackgroundColor #FFFDE7
+    BorderColor     #F9A825
+    FontSize 10
+}
+skinparam database {
+    BackgroundColor #E8F5E9
+    BorderColor     #388E3C
+    FontSize 11
+}
+skinparam arrow {
+    Color       #37474F
+    FontSize    9
+}
+skinparam note {
+    BackgroundColor #FFF9C4
+    BorderColor     #F57F17
+}
+skinparam linetype ortho
+
+title <b>SPORT — Arquitectura Hexagonal (Componentes Reales)</b>
+
+'══════════════════════════════════════════════════════════════════
+'  FRONTEND  (React 19 + TypeScript + Vite)
+'══════════════════════════════════════════════════════════════════
+package "FRONTEND  ·  React 19 + Vite" #D6EAF8 {
+
+    package "domain/model" #BEE3FF {
+        component "types.ts\n──────────────────\nCanchaResponse / Request\nReservaResponse / Request\nPrecioResponse / Request\nAuthResponse · UserSession\nDashboardStats\nEstadoReserva · MetodoPago\nEstadoPago · DiaSemana" as domTypes
+    }
+
+    package "infrastructure/api" #B3D9FF {
+        component "axiosConfig.ts\n(instancia Axios\n+ interceptor JWT)" as axiosCfg
+        component "authService.ts" as authSvc
+        component "canchaService.ts" as canchaSvc
+        component "reservaService.ts" as reservaSvc
+        component "adminService.ts" as adminSvc
+        component "sportApi.ts" as sportApi
+    }
+
+    package "ui/pages" #A8CCEE {
+        component "Login.tsx\nRegister.tsx" as authPages
+        component "Dashboard.tsx\n─ TabHome.tsx\n─ TabCanchas.tsx\n─ TabReservas.tsx\n─ BookingModal.tsx\n─ ExtendModal.tsx\n─ DashboardNavbar.tsx" as dashboardPage
+        component "AdminDashboard.tsx\n─ StatsCard.tsx\n─ ReservasAdminTable.tsx\n─ QuickActions.tsx" as adminDashPage
+        component "GestionCanchas.tsx\n─ CanchaTable.tsx\n─ CanchaFormModal.tsx\n─ ConfirmModal.tsx" as gestionCanchasPage
+        component "GestionPrecios.tsx\n─ PrecioTable.tsx\n─ PrecioFormModal.tsx" as gestionPreciosPage
+    }
+
+    package "ui/components" #A8CCEE {
+        component "SportsBalls.tsx" as sportsBalls
+    }
+
+    ' Relaciones internas Frontend
+    authPages        --> authSvc     : usa
+    dashboardPage    --> reservaSvc  : usa
+    dashboardPage    --> canchaSvc   : usa
+    dashboardPage    --> sportApi    : usa
+    adminDashPage    --> adminSvc    : usa
+    gestionCanchasPage --> adminSvc  : usa
+    gestionPreciosPage --> adminSvc  : usa
+
+    authSvc     --> axiosCfg  : instancia api
+    canchaSvc   --> axiosCfg  : instancia api
+    reservaSvc  --> axiosCfg  : instancia api
+    adminSvc    --> axiosCfg  : instancia api
+    sportApi    --> axiosCfg  : instancia api
+
+    authSvc     ..> domTypes : tipado
+    canchaSvc   ..> domTypes : tipado
+    reservaSvc  ..> domTypes : tipado
+    adminSvc    ..> domTypes : tipado
+}
+
+'══════════════════════════════════════════════════════════════════
+'  BACKEND  (Spring Boot 3.4.1 / Java 21)
+'══════════════════════════════════════════════════════════════════
+package "BACKEND  ·  Spring Boot 3.4.1 / Java 21" #E8F5E9 {
+
+    '─────────────────────────────────────────
+    '  CAPA 1 — INTERFACES  (Adaptadores primarios / Driving)
+    '─────────────────────────────────────────
+    package "interfaces  «Adaptadores Primarios»" #C8E6C9 {
+
+        package "rest" {
+            component "CanchaController\nGET  /api/canchas\nGET  /api/canchas/{id}/slots" as canchaCtrl
+            component "ReservaController\nPOST /api/reservas\nGET  /api/reservas/historial\nPUT  /api/reservas/{id}/ampliar\nDEL  /api/reservas/{id}" as reservaCtrl
+            component "PagoController\nPOST /api/pagos/online\nPOST /api/pagos/presencial\nPOST /api/pagos/{id}/comprobante" as pagoCtrl
+            component "AdminController\nGET  /api/admin/dashboard\nGET  /api/admin/reservas\nPOST /api/admin/reservas/{id}/confirmar\nPOST /api/admin/canchas\nPUT  /api/admin/canchas/{id}\nDEL  /api/admin/canchas/{id}\nGET|POST|DEL /api/admin/precios" as adminCtrl
+        }
+
+        package "dto" {
+            component "request/\nCrearReservaRequest\nAmpliarReservaRequest\nConfigurarPrecioRequest\nCrearCanchaRequest" as dtoReq
+            component "response/\nReservaResponse\nReservaAdminResponse\nCanchaResponse\nPrecioResponse\nErrorResponse\nSlotHorarioResponse" as dtoRes
+        }
+
+        package "exception" {
+            component "GlobalExceptionHandler\n(@RestControllerAdvice)" as exHandler
+        }
+    }
+
+    '─────────────────────────────────────────
+    '  CAPA 2 — APPLICATION  (Casos de uso + Puertos de salida)
+    '─────────────────────────────────────────
+    package "application  «Núcleo de Aplicación»" #A5D6A7 {
+
+        package "usecase/reserva" {
+            component "CrearReservaUseCase\nAmpliarReservaUseCase\nCancelarReservaUseCase\nConsultarDisponibilidadUseCase\nObtenerHistorialReservasUseCase" as reservaUC
+        }
+        package "usecase/cancha" {
+            component "CrearCanchaUseCase\nEditarCanchaUseCase\nDesactivarCanchaUseCase" as canchaUC
+        }
+        package "usecase/precio" {
+            component "ConfigurarPrecioUseCase" as precioUC
+        }
+        package "usecase/pago" {
+            component "ProcesarPagoOnlineUseCase\nRegistrarPagoPresencialUseCase\nSubirComprobanteUseCase" as pagoUC
+        }
+
+        package "command" {
+            component "CrearReservaCommand\nAmpliarReservaCommand\nConfigurarPrecioCommand\nRegistrarUsuarioCommand" as commands
+        }
+
+        package "port  «Puertos de Salida»" #FFECB3 {
+            interface "SmsPort\n+ enviarOtp()\n+ enviarConfirmacion()" as smsPort
+            interface "PagoOnlinePort\n+ procesarPago()" as pagoOnlinePort
+        }
+    }
+
+    '─────────────────────────────────────────
+    '  CAPA 3 — DOMAIN  (Núcleo puro)
+    '─────────────────────────────────────────
+    package "domain  «Núcleo de Dominio»" #81C784 {
+
+        package "model/reserva" {
+            component "Reserva  [Agregado Raíz]\n+ crear() · confirmar()\n+ cancelar() · ampliar()\nReservaId · FranjaHoraria\nEstadoReserva" as modelReserva
+        }
+        package "model/cancha" {
+            component "Cancha\nTipoCancha" as modelCancha
+        }
+        package "model/precio" {
+            component "Precio\nDiaSemana\nFranjaHoraria" as modelPrecio
+        }
+        package "model/pago" {
+            component "Pago\nEstadoPago · ConceptoPago" as modelPago
+        }
+        package "model/usuario" {
+            component "Usuario\nTelefono\nOtpToken · RolUsuario" as modelUsuario
+        }
+
+        package "repository  «Puertos de Dominio»" #FFFDE7 {
+            interface "ReservaRepository\n+ save() · findById()\n+ findReservasSolapadas()" as iReserva
+            interface "CanchaRepository\n+ save() · findAllActivas()" as iCancha
+            interface "PrecioRepository\n+ findAllVigentes()\n+ findByCancha()\n+ deleteById()" as iPrecio
+            interface "PagoRepository\n+ save() · findByReserva()" as iPago
+            interface "UsuarioRepository\n+ save() · findById()\n+ findByTelefono()" as iUsuario
+            interface "OtpTokenRepository\n+ save() · findByTelefono()" as iOtp
+        }
+
+        package "service" {
+            component "CalculadorPrecioService\n+ calcular(precios, fecha, franja)\nPrioridad: feriado > diaSemana > general" as calcSvc
+            component "DisponibilidadService\n+ hayConflicto(reservas, franja)" as dispSvc
+        }
+    }
+
+    '─────────────────────────────────────────
+    '  CAPA 4 — INFRASTRUCTURE  (Adaptadores secundarios / Driven)
+    '─────────────────────────────────────────
+    package "infrastructure  «Adaptadores Secundarios»" #66BB6A {
+
+        package "persistence/entity" #E8F5E9 {
+            component "CanchaJpa · ReservaJpa\nUsuarioJpa · PagoJpa\nPrecioJpa · OtpTokenJpa\n(@Entity JPA)" as entities
+        }
+        package "persistence/jpa" #E8F5E9 {
+            component "CanchaJpaRepository\nReservaJpaRepository\nUsuarioJpaRepository\nPagoJpaRepository\nPrecioJpaRepository\nOtpTokenJpaRepository\n(extends JpaRepository)" as jpaRepos
+        }
+        package "persistence/mapper" #E8F5E9 {
+            component "CanchaMapper · ReservaMapper\nUsuarioMapper · PagoMapper\nPrecioMapper" as mappers
+        }
+        package "persistence/repository  «Implementaciones»" #D4EDDA {
+            component "CanchaRepositoryImpl\nReservaRepositoryImpl\nUsuarioRepositoryImpl\nPagoRepositoryImpl\nPrecioRepositoryImpl\nOtpTokenRepositoryImpl" as repoImpl
+        }
+
+        package "sms  «Implementaciones»" #D4EDDA {
+            component "ConsoleSmsAdapter\n(perfil: dev)\nimprime OTP en consola" as consoleSms
+            component "TwilioSmsAdapter\n(perfil: prod)\nllama a Twilio REST API" as twilioSms
+        }
+
+        package "sms  (pago)" #D4EDDA {
+            component "PagoOnlineAdapter\n(stub — implementa PagoOnlinePort)\nTODO: integrar pasarela real" as pagoAdapter
+        }
+
+        package "config" #E8F5E9 {
+            component "WebConfig\n(CORS — allowedOrigins)\nDomainConfig\n(@Bean servicios dominio)" as webConfig
+        }
+    }
+
+}
+
+'══════════════════════════════════════════════════════════════════
+'  SERVICIOS EXTERNOS
+'══════════════════════════════════════════════════════════════════
+database "PostgreSQL 15\n(BD: sport)\nFlyway migrations" as pgDB #C8E6C9
+
+component "Cloudinary API\nhttps://api.cloudinary.com" as cloudinary #EDE7F6
+component "Twilio SMS API\nhttps://api.twilio.com" as twilio #EDE7F6
+
+'══════════════════════════════════════════════════════════════════
+'  RELACIONES ENTRE CAPAS
+'══════════════════════════════════════════════════════════════════
+
+' --- Frontend → Backend ---
+axiosCfg --> canchaCtrl   : "HTTP REST :8080\n(JSON)"
+axiosCfg --> reservaCtrl  : "HTTP REST"
+axiosCfg --> pagoCtrl     : "HTTP REST"
+axiosCfg --> adminCtrl    : "HTTP REST"
+
+' --- Interfaces → Application ---
+canchaCtrl  --> canchaUC   : delega
+reservaCtrl --> reservaUC  : delega
+pagoCtrl    --> pagoUC     : delega
+adminCtrl   --> canchaUC   : delega
+adminCtrl   --> precioUC   : delega
+adminCtrl   --> reservaUC  : delega
+
+reservaCtrl --> dtoReq : mapea
+reservaCtrl --> dtoRes : retorna
+
+' --- Application → Domain (usa casos de uso → modelos y puertos) ---
+reservaUC --> iReserva    : usa puerto
+reservaUC --> iCancha     : usa puerto
+reservaUC --> modelReserva: opera sobre
+reservaUC --> calcSvc     : calcula precio
+reservaUC --> dispSvc     : valida disponib.
+canchaUC  --> iCancha     : usa puerto
+canchaUC  --> modelCancha : opera sobre
+precioUC  --> iPrecio     : usa puerto
+precioUC  --> modelPrecio : opera sobre
+pagoUC    --> iPago       : usa puerto
+pagoUC    --> iReserva    : consulta reserva
+pagoUC    --> smsPort     : notifica (SMS)
+pagoUC    --> pagoOnlinePort : procesa pago
+
+' --- Infrastructure implementa Domain ports ---
+repoImpl ..|> iReserva  : <<implementa>>
+repoImpl ..|> iCancha   : <<implementa>>
+repoImpl ..|> iPago     : <<implementa>>
+repoImpl ..|> iPrecio   : <<implementa>>
+repoImpl ..|> iUsuario  : <<implementa>>
+repoImpl ..|> iOtp      : <<implementa>>
+
+consoleSms  ..|> smsPort       : <<implementa dev>>
+twilioSms   ..|> smsPort       : <<implementa prod>>
+pagoAdapter ..|> pagoOnlinePort : <<implementa>>
+
+' --- Infrastructure → DB ---
+repoImpl --> mappers
+repoImpl --> jpaRepos
+jpaRepos --> entities
+entities --> pgDB
+
+' --- Servicios Externos ---
+pagoCtrl    --> cloudinary : "upload comprobante\n(multipart/form-data)"
+twilioSms   --> twilio     : "POST SMS"
+
+note right of smsPort
+  <b>Puerto de Salida (Hexagonal)</b>
+  Perfil <i>dev</i> → ConsoleSmsAdapter
+  Perfil <i>prod</i> → TwilioSmsAdapter
+end note
+
+note right of iReserva
+  <b>Puertos de Dominio</b>
+  El dominio define la interfaz.
+  La infra provee la implementación.
+  (Inversión de dependencias — DIP)
+end note
+
+@enduml

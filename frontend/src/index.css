@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+  font-family: 'Outfit', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: dark;
+  color: #f8fafc;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  /* Degradado deportivo naranja/ámbar premium del logo de SPORT 3 */
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 50%, #7c2d12 100%);
+  background-attachment: fixed;
+  overflow-x: hidden;
+}
+
+/* Ocultar barra de desplazamiento en todos los navegadores */
+::-webkit-scrollbar {
+  display: none;
+}
+
+html,
+body {
+  -ms-overflow-style: none;
+  /* IE y Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+/* Resplandores de fondo estilo menú de videojuego */
+body::before {
+  content: '';
+  position: fixed;
+  top: 10%;
+  left: 15%;
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, rgba(254, 215, 170, 0.25) 0%, rgba(249, 115, 22, 0.1) 40%, rgba(249, 115, 22, 0) 70%);
+  z-index: -1;
+  filter: blur(50px);
+  animation: pulseGlow 10s infinite alternate ease-in-out;
+  pointer-events: none;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  bottom: 10%;
+  right: 15%;
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, rgba(234, 88, 12, 0.2) 0%, rgba(124, 45, 18, 0.05) 50%, rgba(124, 45, 18, 0) 70%);
+  z-index: -1;
+  filter: blur(60px);
+  animation: pulseGlow 14s infinite alternate-reverse ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes pulseGlow {
+  0% {
+    transform: scale(1) translate(0, 0);
+    opacity: 0.7;
+  }
+
+  100% {
+    transform: scale(1.15) translate(40px, -30px);
+    opacity: 1;
+  }
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}

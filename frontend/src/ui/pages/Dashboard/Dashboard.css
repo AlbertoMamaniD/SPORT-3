@@ -1,0 +1,532 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+/* Reset de layout del dashboard */
+.dashboard-layout {
+  font-family: 'Outfit', sans-serif;
+  background: radial-gradient(circle at top right, rgba(249, 115, 22, 0.15), transparent 40%),
+    radial-gradient(circle at bottom left, rgba(30, 41, 59, 0.1), transparent 50%),
+    #090d16;
+  min-height: 100vh;
+  width: 100%;
+  color: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+/* ALERTAS */
+.dashboard-alert {
+  position: fixed;
+  top: 5.5rem;
+  right: 2rem;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  animation: slideInAlert 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideInAlert {
+  from {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.alert-success {
+  background: rgba(16, 185, 129, 0.9);
+  border: 1.5px solid rgba(16, 185, 129, 0.4);
+  color: #ffffff;
+}
+
+.alert-danger {
+  background: rgba(239, 68, 68, 0.9);
+  border: 1.5px solid rgba(239, 68, 68, 0.4);
+  color: #ffffff;
+}
+
+/* CONTENEDOR PRINCIPAL */
+.dashboard-content-area {
+  flex: 1;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2.5rem 2rem;
+  box-sizing: border-box;
+}
+
+/* MODALES GENERALES */
+.dashboard-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(4, 6, 10, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+  box-sizing: border-box;
+}
+
+.dashboard-modal-content {
+  background: #0f172a;
+  border: 1.5px solid rgba(249, 115, 22, 0.35);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 460px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: scaleInModal 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes scaleInModal {
+  from {
+    transform: scale(0.92);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modal-header {
+  padding: 1.5rem 1.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.btn-close-modal {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.btn-close-modal:hover {
+  color: #f8fafc;
+}
+
+.modal-body {
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  overflow-y: auto;
+}
+
+/* Custom Scrollbar for Modal Body */
+.modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background: rgba(249, 115, 22, 0.5);
+  border-radius: 4px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(249, 115, 22, 0.8);
+}
+
+/* FOOTER MODAL */
+.modal-footer {
+  padding: 1.25rem 1.75rem;
+  background: rgba(9, 13, 22, 0.4);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+.btn-cancel-modal,
+.btn-confirm-modal {
+  flex: 1;
+  padding: 0.8rem;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  text-align: center;
+}
+
+.btn-cancel-modal {
+  background: transparent;
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  color: #cbd5e1;
+}
+
+.btn-cancel-modal:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.btn-confirm-modal {
+  background: #f97316;
+  border: none;
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+}
+
+.btn-confirm-modal:hover {
+  background: #ea580c;
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.45);
+}
+
+/* =========================================================
+   SPORT3 USER PREMIUM PATCH
+   Pegar al final de Dashboard.css
+   No modifica lógica ni QR
+========================================================= */
+
+.dashboard-layout {
+  font-family: Inter, system-ui, sans-serif !important;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(255, 106, 0, 0.2), transparent 30%),
+    radial-gradient(circle at 92% 12%, rgba(96, 165, 250, 0.13), transparent 28%),
+    radial-gradient(circle at 65% 80%, rgba(255, 106, 0, 0.12), transparent 34%),
+    linear-gradient(135deg, #050914 0%, #07101e 42%, #1c0e0b 100%) !important;
+  color: #f8fafc !important;
+}
+
+.dashboard-content-area {
+  max-width: 1180px !important;
+  padding: 2.6rem 1.5rem 5rem !important;
+}
+
+/* NAVBAR */
+.dashboard-navbar,
+.navbar,
+.top-nav {
+  background: rgba(9, 14, 29, 0.82) !important;
+  border-bottom: 1px solid rgba(255, 106, 0, 0.22) !important;
+  backdrop-filter: blur(24px) !important;
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.28) !important;
+}
+
+.dashboard-navbar button,
+.nav-tab,
+.nav-link {
+  border-radius: 15px !important;
+  font-weight: 900 !important;
+  transition: 0.25s ease !important;
+}
+
+.dashboard-navbar button:hover,
+.nav-tab:hover,
+.nav-link:hover {
+  transform: translateY(-2px) !important;
+}
+
+.nav-tab.active,
+.nav-link.active {
+  background: linear-gradient(135deg, #ff6a00, #ff9a3d) !important;
+  color: #ffffff !important;
+  box-shadow: 0 14px 36px rgba(255, 106, 0, 0.32) !important;
+}
+
+/* CARDS GENERALES */
+.welcome-card,
+.home-hero-card,
+.user-info-card,
+.info-card,
+.stats-card,
+.dashboard-card,
+.reserva-card-item,
+.checkout-summary-box,
+.payment-option-card,
+.no-slots-alert,
+.slots-loader-placeholder {
+  background: rgba(17, 24, 39, 0.68) !important;
+  border: 1px solid rgba(255, 255, 255, 0.09) !important;
+  border-radius: 24px !important;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.32) !important;
+  backdrop-filter: blur(24px) !important;
+}
+
+.welcome-card,
+.home-hero-card {
+  background:
+    radial-gradient(circle at 0% 0%, rgba(255, 106, 0, 0.18), transparent 34%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.035)) !important;
+  border: 1px solid rgba(255, 106, 0, 0.22) !important;
+}
+
+/* TÍTULOS */
+h1,
+h2,
+h3 {
+  color: #fff7ed !important;
+  letter-spacing: -0.5px !important;
+}
+
+.section-title,
+.reservas-section-title {
+  color: #fff7ed !important;
+  font-weight: 900 !important;
+}
+
+/* BOTONES */
+button,
+.btn-primary-action,
+.btn-secondary-action,
+.btn-action-extend,
+.btn-action-cancel {
+  border-radius: 16px !important;
+  font-weight: 900 !important;
+  transition: 0.25s ease !important;
+}
+
+button:hover,
+.btn-primary-action:hover,
+.btn-secondary-action:hover,
+.btn-action-extend:hover,
+.btn-action-cancel:hover {
+  transform: translateY(-2px) !important;
+}
+
+.btn-primary-action,
+button[type='submit'] {
+  background: linear-gradient(135deg, #ff6a00, #ff9a3d) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 16px 40px rgba(255, 106, 0, 0.32) !important;
+  color: white !important;
+}
+
+.btn-secondary-action {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #e5e7eb !important;
+}
+
+.btn-action-extend {
+  background: rgba(96, 165, 250, 0.13) !important;
+  color: #bfdbfe !important;
+  border: 1px solid rgba(96, 165, 250, 0.22) !important;
+}
+
+.btn-action-cancel {
+  background: rgba(251, 113, 133, 0.13) !important;
+  color: #fda4af !important;
+  border: 1px solid rgba(251, 113, 133, 0.22) !important;
+}
+
+/* FORMULARIOS */
+input,
+select {
+  background: #060b16 !important;
+  color: white !important;
+  border: 1px solid rgba(255, 106, 0, 0.28) !important;
+  border-radius: 15px !important;
+  font-weight: 800 !important;
+}
+
+input:focus,
+select:focus {
+  border-color: rgba(255, 106, 0, 0.85) !important;
+  box-shadow: 0 0 0 4px rgba(255, 106, 0, 0.12) !important;
+}
+
+/* CANCHAS Y HORARIOS */
+.cancha-selector-card,
+.cancha-card,
+.slot-card,
+.time-slot,
+.horario-slot {
+  background: rgba(4, 31, 41, 0.72) !important;
+  border: 1px solid rgba(32, 212, 137, 0.18) !important;
+  border-radius: 17px !important;
+  transition: 0.22s ease !important;
+}
+
+.cancha-selector-card:hover,
+.cancha-card:hover,
+.slot-card:hover,
+.time-slot:hover,
+.horario-slot:hover {
+  transform: translateY(-4px) !important;
+  border-color: rgba(255, 106, 0, 0.55) !important;
+  box-shadow: 0 18px 46px rgba(255, 106, 0, 0.16) !important;
+}
+
+.slot-card.selected,
+.time-slot.selected,
+.horario-slot.selected {
+  border-color: #ff6a00 !important;
+  box-shadow:
+    0 0 0 2px rgba(255, 106, 0, 0.22),
+    0 18px 50px rgba(255, 106, 0, 0.22) !important;
+}
+
+/* BADGES */
+.badge,
+.chip,
+.reserva-status-badge,
+.user-role-badge {
+  border-radius: 999px !important;
+  font-weight: 900 !important;
+}
+
+.reserva-status-badge.pendiente,
+.badge-pendiente {
+  background: rgba(250, 204, 21, 0.13) !important;
+  color: #fde68a !important;
+  border: 1px solid rgba(250, 204, 21, 0.22) !important;
+}
+
+.reserva-status-badge.confirmada,
+.badge-confirmada {
+  background: rgba(32, 212, 137, 0.13) !important;
+  color: #86efac !important;
+  border: 1px solid rgba(32, 212, 137, 0.22) !important;
+}
+
+.reserva-status-badge.cancelada,
+.badge-cancelada {
+  background: rgba(251, 113, 133, 0.13) !important;
+  color: #fda4af !important;
+  border: 1px solid rgba(251, 113, 133, 0.22) !important;
+}
+
+/* MODAL SIN TOCAR EL QR */
+.dashboard-modal-backdrop {
+  background: rgba(0, 0, 0, 0.72) !important;
+  backdrop-filter: blur(9px) !important;
+}
+
+.dashboard-modal-content {
+  background: #0b1220 !important;
+  border: 1px solid rgba(255, 106, 0, 0.26) !important;
+  border-radius: 26px !important;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.65) !important;
+}
+
+.modal-header,
+.modal-footer {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.payment-option-card {
+  cursor: pointer !important;
+}
+
+.payment-option-card.active {
+  border-color: #ff6a00 !important;
+  background: rgba(255, 106, 0, 0.09) !important;
+}
+
+.comprobante-upload-zone {
+  border-radius: 16px !important;
+  border: 2px dashed #ff6a00 !important;
+  background: rgba(255, 106, 0, 0.06) !important;
+  color: #d1d5db !important;
+}
+
+/* ALERTAS */
+.dashboard-alert {
+  top: 7rem !important;
+  right: 1.5rem !important;
+  border-radius: 18px !important;
+  backdrop-filter: blur(20px) !important;
+  font-weight: 900 !important;
+}
+
+.alert-success {
+  background: rgba(8, 35, 28, 0.92) !important;
+  border: 1px solid rgba(32, 212, 137, 0.3) !important;
+  color: #86efac !important;
+}
+
+.alert-danger {
+  background: rgba(55, 18, 24, 0.92) !important;
+  border: 1px solid rgba(251, 113, 133, 0.3) !important;
+  color: #fda4af !important;
+}
+
+/* RESPONSIVE CELULAR */
+@media (max-width: 768px) {
+  .dashboard-content-area {
+    padding: 1.25rem 1rem 4rem !important;
+  }
+
+  .dashboard-alert {
+    left: 1rem !important;
+    right: 1rem !important;
+    top: 5.5rem !important;
+  }
+
+  .welcome-card,
+  .home-hero-card,
+  .user-info-card,
+  .info-card,
+  .reserva-card-item,
+  .dashboard-card {
+    border-radius: 20px !important;
+    padding: 1.25rem !important;
+  }
+
+  .reservas-list-grid,
+  .info-grid,
+  .stats-grid,
+  .slots-grid,
+  .canchas-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .dashboard-modal-content {
+    max-width: 100% !important;
+    width: 100% !important;
+    border-radius: 22px !important;
+  }
+
+  .modal-footer {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 0.75rem !important;
+  }
+
+  .reserva-actions-footer {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  button,
+  .btn-primary-action,
+  .btn-secondary-action {
+    width: 100%;
+    justify-content: center;
+  }
+}

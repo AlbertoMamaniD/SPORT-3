@@ -1,0 +1,425 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+.sport-auth-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  font-family: Inter, system-ui, sans-serif;
+  color: #fff7ed;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(255, 203, 91, 0.14), transparent 18%),
+    radial-gradient(circle at 80% 28%, rgba(255, 98, 0, 0.24), transparent 28%),
+    linear-gradient(115deg, #ff6a00 0%, #f95a00 38%, #9b2a07 100%);
+}
+
+.sport-auth-page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(circle at center, black 0%, transparent 76%);
+  opacity: 0.22;
+  z-index: -3;
+}
+
+.sport-auth-page::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 45%, transparent 0%, rgba(0, 0, 0, 0.12) 36%, rgba(0, 0, 0, 0.38) 100%),
+    linear-gradient(90deg, rgba(255, 106, 0, 0.06), rgba(0, 0, 0, 0.4));
+  z-index: -2;
+}
+
+.sport-auth-card {
+  width: min(482px, 100%);
+  min-height: 565px;
+  position: relative;
+  padding: 30px 34px 28px;
+  border-radius: 28px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.035)),
+    rgba(21, 16, 25, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.46);
+  backdrop-filter: blur(28px);
+  overflow: hidden;
+}
+
+.sport-auth-card::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 154, 61, 0.22), transparent 28%),
+    linear-gradient(135deg, rgba(255, 106, 0, 0.12), transparent 42%, rgba(59, 130, 246, 0.08));
+  pointer-events: none;
+}
+
+.sport-auth-content {
+  position: relative;
+  z-index: 2;
+}
+
+.sport-brand-zone {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.sport-brand-icons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.sport-brand-icon-circle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(145deg, #ffffff, #dbeafe);
+  border: 2px solid rgba(15, 23, 42, 0.82);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.32);
+  color: #0f172a;
+}
+
+.sport-brand-icon-circle.alt {
+  background: conic-gradient(from 160deg, #2563eb 0deg 96deg, #facc15 96deg 176deg, #f8fafc 176deg 252deg, #2563eb 252deg 310deg, #facc15 310deg 360deg);
+}
+
+.sport-brand-name {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.sport-brand-name span:first-child {
+  font-size: 29px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  color: #ffffff;
+}
+
+.sport-brand-number {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  font-size: 23px;
+  font-weight: 900;
+  font-style: italic;
+  background: linear-gradient(135deg, #ff6200, #ff9b3f);
+  color: #ffffff;
+  box-shadow: 0 14px 36px rgba(255, 98, 0, 0.42);
+  transform: rotate(6deg);
+}
+
+.sport-auth-title {
+  font-size: 32px;
+  line-height: 1.05;
+  letter-spacing: -1.1px;
+  font-weight: 900;
+  color: #fff7ed;
+  margin-bottom: 12px;
+}
+
+.sport-auth-copy {
+  width: min(350px, 100%);
+  margin: 0 auto;
+  color: #d4d1d1;
+  line-height: 1.48;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.sport-auth-form {
+  margin-top: 26px;
+}
+
+.sport-form-group {
+  margin-bottom: 18px;
+}
+
+.sport-form-label {
+  display: block;
+  color: #ff9b3f;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 9px;
+}
+
+.sport-input-wrap {
+  position: relative;
+}
+
+.sport-input-wrap svg {
+  position: absolute;
+  left: 17px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #ff9b3f;
+  pointer-events: none;
+}
+
+.sport-input {
+  width: 100%;
+  height: 52px;
+  border-radius: 15px;
+  border: 1px solid rgba(255, 106, 0, 0.18);
+  background: rgba(7, 10, 18, 0.82);
+  color: #ffffff;
+  padding: 0 18px 0 49px;
+  font-size: 14px;
+  font-weight: 700;
+  outline: none;
+  transition: 0.25s ease;
+}
+
+.sport-input::placeholder {
+  color: #64748b;
+  font-weight: 700;
+}
+
+.sport-input:focus {
+  border-color: rgba(255, 106, 0, 0.8);
+  box-shadow: 0 0 0 4px rgba(255, 106, 0, 0.12), 0 15px 30px rgba(255, 106, 0, 0.12);
+  background: rgba(8, 11, 20, 0.95);
+}
+
+.sport-otp-input {
+  letter-spacing: 0.3em;
+  text-align: center;
+  font-weight: 900;
+  font-size: 20px;
+  padding-left: 18px;
+}
+
+.sport-main-btn,
+.sport-secondary-btn {
+  width: 100%;
+  height: 54px;
+  border: none;
+  border-radius: 15px;
+  margin-top: 8px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.sport-main-btn {
+  background: linear-gradient(135deg, #ff6200, #ff9b3f);
+  box-shadow: 0 18px 38px rgba(255, 98, 0, 0.33);
+}
+
+.sport-secondary-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  margin-top: 12px;
+}
+
+.sport-main-btn:hover,
+.sport-secondary-btn:hover {
+  transform: translateY(-2px);
+}
+
+.sport-switch-text {
+  margin-top: 25px;
+  text-align: center;
+  color: #d1d5db;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.sport-switch-text button {
+  border: 0;
+  background: transparent;
+  color: #ff9b3f;
+  font: inherit;
+  font-weight: 900;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.sport-security-strip {
+  margin-top: 21px;
+  padding: 13px 15px;
+  border-radius: 17px;
+  background: rgba(36, 209, 143, 0.1);
+  border: 1px solid rgba(36, 209, 143, 0.2);
+  color: #a7f3d0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.sport-auth-alert {
+  margin: 0 0 18px;
+  padding: 13px 15px;
+  border-radius: 16px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.sport-auth-alert.success {
+  background: rgba(36, 209, 143, 0.12);
+  border: 1px solid rgba(36, 209, 143, 0.25);
+  color: #a7f3d0;
+}
+
+.sport-auth-alert.danger {
+  background: rgba(251, 113, 133, 0.13);
+  border: 1px solid rgba(251, 113, 133, 0.25);
+  color: #fda4af;
+}
+
+.floating-icon {
+  position: absolute;
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 22px;
+  color: #fff7ed;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.07));
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.32);
+  backdrop-filter: blur(16px);
+  opacity: 0.72;
+  animation: floatIcon 8s ease-in-out infinite;
+  z-index: -1;
+}
+
+.floating-icon svg {
+  width: 45%;
+  height: 45%;
+}
+
+.floating-icon.orange {
+  background: linear-gradient(145deg, rgba(255, 106, 0, 0.34), rgba(255, 154, 61, 0.12));
+}
+
+.floating-icon.blue {
+  background: linear-gradient(145deg, rgba(59, 130, 246, 0.25), rgba(255, 255, 255, 0.08));
+}
+
+.floating-icon.small {
+  width: 38px;
+  height: 38px;
+  opacity: 0.48;
+  border-radius: 18px;
+}
+
+.i1 {
+  left: 5%;
+  top: 14%;
+  animation-duration: 7s;
+}
+
+.i2 {
+  left: 18%;
+  top: 33%;
+  animation-duration: 8.5s;
+}
+
+.i3 {
+  left: 8%;
+  top: 56%;
+  animation-duration: 7.8s;
+}
+
+.i4 {
+  left: 21%;
+  top: 72%;
+  animation-duration: 9s;
+}
+
+.i5 {
+  left: 10%;
+  top: 84%;
+  animation-duration: 8s;
+}
+
+.i6 {
+  left: 92%;
+  top: 16%;
+  animation-duration: 8.2s;
+}
+
+.i7 {
+  left: 81%;
+  top: 35%;
+  animation-duration: 9s;
+}
+
+.i8 {
+  left: 90%;
+  top: 50%;
+  animation-duration: 7.4s;
+}
+
+.i9 {
+  left: 78%;
+  top: 71%;
+  animation-duration: 8.8s;
+}
+
+.i10 {
+  left: 88%;
+  top: 82%;
+  animation-duration: 7.9s;
+}
+
+@keyframes floatIcon {
+
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+
+  50% {
+    transform: translate3d(14px, -22px, 0) rotate(10deg);
+  }
+}
+
+@media (max-width: 720px) {
+  .sport-auth-page {
+    overflow: auto;
+    padding: 18px;
+  }
+
+  .sport-auth-card {
+    min-height: auto;
+    padding: 26px 20px;
+  }
+
+  .sport-auth-title {
+    font-size: 30px;
+  }
+
+  .floating-icon {
+    display: none;
+  }
+}

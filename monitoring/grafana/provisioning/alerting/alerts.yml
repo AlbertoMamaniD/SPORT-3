@@ -1,0 +1,198 @@
+apiVersion: 1
+
+groups:
+  - orgId: 1
+    name: sport-alerts
+    folder: Sport Alerts
+    interval: 1m
+    rules:
+
+      # ── Alerta 1: CPU alta ─────────────────────────────────────────────
+      - uid: alert_cpu_high
+        title: High CPU Usage
+        condition: B
+        data:
+          - refId: A
+            relativeTimeRange: { from: 300, to: 0 }
+            datasourceUid: prometheus-sport
+            model:
+              expr: process_cpu_usage
+              instant: true
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: A
+          - refId: B
+            relativeTimeRange: { from: 300, to: 0 }
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator: { params: [0.85], type: gt }
+                  operator:  { type: and }
+                  query:     { params: [A] }
+                  reducer:   { params: [], type: last }
+                  type: query
+              datasource: { type: __expr__, uid: __expr__ }
+              expression: A
+              hide: false
+              refId: B
+              type: classic_conditions
+        noDataState: NoData
+        execErrState: Error
+        for: 2m
+        annotations:
+          summary: JVM CPU > 85%
+          description: "La CPU de la JVM lleva más de 2 minutos por encima del 85%. Revisar el backend."
+        labels:
+          severity: warning
+
+      # ── Alerta 2: Heap Memory alta ────────────────────────────────────
+      - uid: alert_heap_high
+        title: High JVM Heap Memory
+        condition: B
+        data:
+          - refId: A
+            relativeTimeRange: { from: 300, to: 0 }
+            datasourceUid: prometheus-sport
+            model:
+              expr: jvm_memory_used_bytes{area="heap"} / jvm_memory_max_bytes{area="heap"}
+              instant: true
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: A
+          - refId: B
+            relativeTimeRange: { from: 300, to: 0 }
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator: { params: [0.90], type: gt }
+                  operator:  { type: and }
+                  query:     { params: [A] }
+                  reducer:   { params: [], type: last }
+                  type: query
+              datasource: { type: __expr__, uid: __expr__ }
+              expression: A
+              hide: false
+              refId: B
+              type: classic_conditions
+        noDataState: NoData
+        execErrState: Error
+        for: 2m
+        annotations:
+          summary: Heap JVM > 90%
+          description: "La JVM está usando más del 90% del Heap máximo. Riesgo de OutOfMemoryError."
+        labels:
+          severity: critical
+
+      # ── Alerta 3: Tasa de errores 5xx ────────────────────────────────
+      - uid: alert_5xx_high
+        title: High HTTP 5xx Error Rate
+        condition: B
+        data:
+          - refId: A
+            relativeTimeRange: { from: 300, to: 0 }
+            datasourceUid: prometheus-sport
+            model:
+              expr: sum(rate(http_server_requests_seconds_count{status=~"5.."}[5m]))
+              instant: true
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: A
+          - refId: B
+            relativeTimeRange: { from: 300, to: 0 }
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator: { params: [0.05], type: gt }
+                  operator:  { type: and }
+                  query:     { params: [A] }
+                  reducer:   { params: [], type: last }
+                  type: query
+              datasource: { type: __expr__, uid: __expr__ }
+              expression: A
+              hide: false
+              refId: B
+              type: classic_conditions
+        noDataState: NoData
+        execErrState: Error
+        for: 1m
+        annotations:
+          summary: "Errores 5xx detectados"
+          description: "El backend está devolviendo errores HTTP 5xx. Revisar logs urgentemente."
+        labels:
+          severity: critical
+
+      # ── Alerta 4: Latencia HTTP alta ──────────────────────────────────
+      - uid: alert_latency_high
+        title: High HTTP Response Latency
+        condition: B
+        data:
+          - refId: A
+            relativeTimeRange: { from: 300, to: 0 }
+            datasourceUid: prometheus-sport
+            model:
+              expr: http_server_requests_seconds_max
+              instant: true
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: A
+          - refId: B
+            relativeTimeRange: { from: 300, to: 0 }
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator: { params: [2], type: gt }
+                  operator:  { type: and }
+                  query:     { params: [A] }
+                  reducer:   { params: [], type: last }
+                  type: query
+              datasource: { type: __expr__, uid: __expr__ }
+              expression: A
+              hide: false
+              refId: B
+              type: classic_conditions
+        noDataState: NoData
+        execErrState: Error
+        for: 2m
+        annotations:
+          summary: Latencia HTTP > 2s
+          description: "Al menos un endpoint tarda más de 2 segundos en responder. El rendimiento está degradado."
+        labels:
+          severity: warning
+
+      # ── Alerta 5: Hikari Pool saturado ───────────────────────────────
+      - uid: alert_hikari_exhausted
+        title: Hikari DB Pool Exhausted
+        condition: B
+        data:
+          - refId: A
+            relativeTimeRange: { from: 300, to: 0 }
+            datasourceUid: prometheus-sport
+            model:
+              expr: hikaricp_connections_pending
+              instant: true
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: A
+          - refId: B
+            relativeTimeRange: { from: 300, to: 0 }
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator: { params: [3], type: gt }
+                  operator:  { type: and }
+                  query:     { params: [A] }
+                  reducer:   { params: [], type: last }
+                  type: query
+              datasource: { type: __expr__, uid: __expr__ }
+              expression: A
+              hide: false
+              refId: B
+              type: classic_conditions
+        noDataState: NoData
+        execErrState: Error
+        for: 1m
+        annotations:
+          summary: "Conexiones DB agotadas"
+          description: "Más de 3 hilos esperando conexión a la base de datos. Riesgo de timeouts en el backend."
+        labels:
+          severity: critical

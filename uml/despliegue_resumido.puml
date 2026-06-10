@@ -1,0 +1,48 @@
+@startuml despliegue_resumido
+!theme plain
+skinparam backgroundColor #FAFAFA
+skinparam node {
+    BackgroundColor #D6EAF8
+    BorderColor #2980B9
+    FontStyle bold
+}
+skinparam database {
+    BackgroundColor #E8F8F5
+    BorderColor #1ABC9C
+}
+skinparam component {
+    BackgroundColor #FDEBD0
+    BorderColor #E67E22
+}
+skinparam arrow {
+    Color #2C3E50
+    FontSize 10
+}
+skinparam linetype ortho
+
+title <b>SPORT - Despliegue (Nodos)</b>
+
+node "Navegador\n(Cliente)" as browser
+
+node "Docker: web\nnginx :80" as web {
+    component "React SPA" as spa
+}
+
+node "Docker: app\nJDK 21 :8080" as app {
+    component "Spring Boot API" as api
+}
+
+node "Docker: db\nPostgres 15 :5432" as db {
+    database "BD: sport\n(Flyway)" as pg
+}
+
+node "Cloudinary\n(comprobantes)" as cloud
+node "Twilio\n(SMS OTP)" as twilio
+
+browser --> web   : HTTP :80
+browser --> app   : REST :8080
+app     --> db    : JDBC
+app     --> cloud : HTTPS upload
+app     --> twilio : HTTPS SMS
+
+@enduml

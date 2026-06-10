@@ -1,0 +1,91 @@
+@startuml Diagrama_Despliegue_SPORT
+!theme plain
+skinparam backgroundColor #FAFAFA
+skinparam node {
+    BackgroundColor #E8F4FD
+    BorderColor #2980B9
+    FontSize 13
+    FontStyle bold
+}
+skinparam artifact {
+    BackgroundColor #FDEBD0
+    BorderColor #E67E22
+}
+skinparam database {
+    BackgroundColor #E8F8F5
+    BorderColor #1ABC9C
+}
+skinparam component {
+    BackgroundColor #F9EBEA
+    BorderColor #E74C3C
+}
+skinparam arrow {
+    Color #2C3E50
+    FontSize 11
+}
+skinparam linetype ortho
+
+title <b>SPORT — Diagrama de Despliegue (Nodos)</b>
+
+' ===================== CLIENTE =====================
+node "<<Dispositivo>>\nNavegador Web" as browser #D6EAF8 {
+    artifact "React SPA\n(Vite + TypeScript)" as spa
+}
+
+' ===================== SERVIDOR WEB =====================
+node "<<Servidor>>\nContenedor Docker: web\n(nginx:alpine  :80)" as webServer #EBF5FB {
+    artifact "Frontend\nBuild Estático" as frontBuild
+}
+
+' ===================== SERVIDOR APP =====================
+node "<<Servidor>>\nContenedor Docker: app\n(JDK 21  :8080)" as appServer #EAFAF1 {
+    component "Spring Boot 3.4.1\n(API REST)" as springApp
+
+    package "Capas Hexagonales" {
+        component "interfaces\n(REST Controllers)" as ctrl
+        component "application\n(Use Cases)" as app
+        component "domain\n(Modelos / Servicios)" as domain
+        component "infrastructure\n(Adapters / JPA)" as infra
+    }
+
+    ctrl --> app
+    app --> domain
+    infra --> domain
+}
+
+' ===================== BASE DE DATOS =====================
+node "<<Servidor>>\nContenedor Docker: db\n(postgres:15-alpine  :5432)" as dbServer #FEF9E7 {
+    database "PostgreSQL 15\nBD: sport" as pgDB
+}
+
+' ===================== SERVICIOS EXTERNOS =====================
+node "<<Servicio Externo>>\nCloudinary\n(api.cloudinary.com)" as cloudinary #F5EEF8 {
+    artifact "Almacenamiento\nde Comprobantes" as cloudStorage
+}
+
+node "<<Servicio Externo>>\nTwilio\n(api.twilio.com)" as twilio #FDEDEC {
+    artifact "Envío SMS\n(OTP)" as smsService
+}
+
+' ===================== RELACIONES =====================
+browser --> webServer : "HTTP :80\n(HTTPS en prod)"
+browser --> appServer : "HTTP :8080\n(REST API / JSON)"
+webServer ..> appServer : "reverse proxy\n(opcional)"
+appServer --> dbServer : "JDBC :5432\n(Spring Data JPA)"
+appServer --> cloudinary : "HTTPS\n(upload imagen)"
+appServer --> twilio : "HTTPS\n(SMS OTP)"
+
+note right of appServer
+  <b>Variables de entorno:</b>
+  SPRING_DATASOURCE_URL
+  JWT_SECRET
+  TWILIO_ACCOUNT_SID
+  CLOUDINARY_CLOUD_NAME
+end note
+
+note bottom of dbServer
+  Volumen persistente: pgdata
+  Migraciones: Flyway
+end note
+
+@enduml

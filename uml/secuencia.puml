@@ -1,0 +1,155 @@
+@startuml Flujo_Crear_Reserva
+!theme plain
+skinparam backgroundColor #FAFAFA
+skinparam sequenceArrowThickness 2
+skinparam sequenceGroupBorderColor #2980B9
+skinparam sequenceGroupBodyBackgroundColor #EBF5FB
+skinparam sequenceLifeLineBorderColor #5D6D7E
+skinparam sequenceParticipantBackgroundColor #D6EAF8
+skinparam sequenceParticipantBorderColor #2E86C1
+skinparam sequenceActorBackgroundColor #FDFEFE
+skinparam sequenceActorBorderColor #1ABC9C
+skinparam noteBorderColor #E67E22
+skinparam noteBackgroundColor #FDEBD0
+skinparam arrow {
+    Color #2C3E50
+    FontSize 11
+}
+
+title <b>SPORT — Diagrama de Secuencia: Crear Reserva con Pago</b>
+
+actor "Usuario" as user
+actor "Administrador" as admin
+
+participant "React SPA\n(Dashboard)" as spa #D4E6F1
+participant "CanchaController\n/api/canchas" as canchaCtrl #D5F5E3
+participant "AdminController\n/api/admin" as adminCtrl #D5F5E3
+participant "ReservaController\n/api/reservas" as reservaCtrl #D5F5E3
+participant "PagoController\n/api/pagos" as pagoCtrl #D5F5E3
+participant "CrearReservaUseCase" as uc #FDEDEC
+participant "ConsultarDisponibilidadUseCase" as dispUC #FDEDEC
+participant "CalculadorPrecioService" as calcSvc #FEF9E7
+participant "DisponibilidadService" as dispSvc #FEF9E7
+participant "CanchaRepository" as canchaRepo #FEF9E7
+participant "ReservaRepository" as reservaRepo #FEF9E7
+participant "PrecioRepository" as precioRepo #FEF9E7
+participant "PagoRepository" as pagoRepo #F9EBEA
+participant "PostgreSQL" as db #E8F8F5
+participant "Cloudinary API" as cloud #F5EEF8
+
+' ─────────────────────────────────────────────────────
+' 1. VER DISPONIBILIDAD DE CANCHAS
+' ─────────────────────────────────────────────────────
+group 1. Consultar canchas y disponibilidad
+    user -> spa : Selecciona fecha y cancha
+    spa -> canchaCtrl : GET /api/canchas
+    canchaCtrl -> canchaRepo : findAllActivas()
+    canchaRepo -> db : SELECT * FROM canchas\nWHERE activa = true
+    db --> canchaRepo : List<CanchaJpa>
+    canchaRepo --> canchaCtrl : List<Cancha>
+    canchaCtrl --> spa : 200 OK  List<CanchaResponse>
+
+    spa -> canchaCtrl : GET /api/canchas/{id}/disponibilidad?fecha=
+    canchaCtrl -> dispUC : execute(canchaId, fecha)
+    dispUC -> reservaRepo : findReservasSolapadas(canchaId, fecha, franja)
+    reservaRepo -> db : SELECT * FROM reservas\nWHERE cancha_id=? AND fecha=?
+    db --> reservaRepo : List<ReservaJpa>
+    reservaRepo --> dispUC : List<Reserva>
+    dispUC -> dispSvc : hayConflicto(reservas, franja)
+    dispSvc --> dispUC : boolean
+    dispUC --> canchaCtrl : List<SlotHorario>
+    canchaCtrl --> spa : 200 OK  List<SlotHorarioResponse>\n{horaInicio, horaFin, disponible, precio}
+    spa --> user : Muestra slots disponibles con precios
+end
+
+' ─────────────────────────────────────────────────────
+' 2. CREAR RESERVA
+' ─────────────────────────────────────────────────────
+group 2. Crear Reserva
+    user -> spa : Confirma slot, cancha y método de pago
+    spa -> reservaCtrl : POST /api/reservas\n{canchaId, fecha, horaInicio, horaFin, metodoPago}
+
+    reservaCtrl -> uc : execute(CrearReservaCommand)
+
+    uc -> reservaRepo : findReservasSolapadas(canchaId, fecha, franja)
+    reservaRepo -> db : SELECT * FROM reservas\nWHERE cancha_id=? AND fecha=?\nAND hora_inicio < ? AND hora_fin > ?
+    db --> reservaRepo : List<ReservaJpa>
+    reservaRepo --> uc : List<Reserva>
+
+    alt Cancha NO disponible
+        uc --> reservaCtrl : throws CanchaNoDisponibleException
+        reservaCtrl --> spa : 409 Conflict { mensaje }
+        spa --> user : "Cancha no disponible en ese horario"
+    else Cancha disponible
+        uc -> precioRepo : findByCancha(canchaId, fecha, franja)
+        precioRepo -> db : SELECT * FROM precios\nWHERE cancha_id=? AND vigente=true
+        db --> precioRepo : List<PrecioJpa>
+        precioRepo --> uc : List<Precio>
+        uc -> calcSvc : calcular(precios, fecha, franja)
+        note right of calcSvc
+          Prioridad:
+          1. feriado
+          2. día semana específico
+          3. precio general
+        end note
+        calcSvc --> uc : BigDecimal montoTotal
+
+        uc -> reservaRepo : save(Reserva.crear(usuarioId, canchaId,\nfecha, franja, montoTotal))
+        reservaRepo -> db : INSERT INTO reservas (...)\nVALUES (...) → estado=PENDIENTE
+        db --> reservaRepo : ReservaJpa (id generado)
+        reservaRepo --> uc : Reserva
+
+        uc --> reservaCtrl : Reserva
+        reservaCtrl --> spa : 201 Created\nReservaResponse {id, estado=PENDIENTE, montoTotal}
+        spa --> user : "Reserva creada — Estado: PENDIENTE"
+    end
+end
+
+' ─────────────────────────────────────────────────────
+' 3a. PAGO ONLINE — sube comprobante
+' ─────────────────────────────────────────────────────
+group 3a. Pago Online (transferencia / QR)
+    user -> spa : Sube imagen de comprobante de pago
+    spa -> pagoCtrl : POST /api/pagos/{reservaId}/comprobante\n(multipart: file, concepto=RESERVA_INICIAL)
+
+    pagoCtrl -> cloud : POST api.cloudinary.com/v1_1/{cloud}/image/upload\n(upload_preset, file bytes)
+    cloud --> pagoCtrl : { secure_url }
+
+    pagoCtrl -> pagoCtrl : SubirComprobanteUseCase.execute(\nreservaId, concepto, urlComprobante)
+    pagoCtrl -> pagoRepo : save(Pago{concepto, urlComprobante,\nestado=PENDIENTE_VERIFICACION})
+    pagoRepo -> db : INSERT INTO pagos\n(..., url_comprobante, estado=PENDIENTE)
+    db --> pagoRepo : PagoJpa
+    pagoRepo --> pagoCtrl : Pago
+    pagoCtrl --> spa : 200 OK { estado, urlComprobante }
+    spa --> user : "Comprobante subido\n— Esperando verificación del admin"
+end
+
+' ─────────────────────────────────────────────────────
+' 3b. PAGO PRESENCIAL — Admin registra y confirma
+' ─────────────────────────────────────────────────────
+group 3b. Pago Presencial + Confirmación Admin
+    admin -> spa : Accede a AdminDashboard → reservas PENDIENTE
+    spa -> pagoCtrl : POST /api/pagos/presencial?reservaId={id}
+    pagoCtrl -> pagoCtrl : RegistrarPagoPresencialUseCase.execute(reservaId)
+    pagoCtrl -> pagoRepo : save(Pago{estado=COMPLETADO})
+    pagoRepo -> db : INSERT INTO pagos\n(..., estado=COMPLETADO)
+    db --> pagoRepo : PagoJpa
+    pagoRepo --> pagoCtrl : Pago
+    pagoCtrl --> spa : 200 OK { estado: COMPLETADO }
+
+    admin -> spa : Pulsa "Confirmar Reserva"
+    spa -> adminCtrl : POST /api/admin/reservas/{id}/confirmar
+    adminCtrl -> reservaRepo : findById(ReservaId)
+    reservaRepo -> db : SELECT * FROM reservas WHERE id=?
+    db --> reservaRepo : ReservaJpa {estado=PENDIENTE}
+    reservaRepo --> adminCtrl : Reserva
+    adminCtrl -> adminCtrl : reserva.confirmar()\n→ estado = CONFIRMADA
+    adminCtrl -> reservaRepo : save(reserva)
+    reservaRepo -> db : UPDATE reservas\nSET estado='CONFIRMADA' WHERE id=?
+    db --> reservaRepo : OK
+    reservaRepo --> adminCtrl : Reserva
+    adminCtrl --> spa : 200 OK { estado: CONFIRMADA }
+    spa --> admin : "Reserva confirmada correctamente"
+end
+
+@enduml

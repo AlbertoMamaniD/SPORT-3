@@ -1,0 +1,1 @@
+-- Migración V5 vaciada para dejar la base de datos limpia de fábrica

@@ -1,0 +1,391 @@
+/* NAVBAR / HEADER */
+.dashboard-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1.5px solid rgba(249, 115, 22, 0.2);
+  transition: all 0.3s ease;
+}
+
+.navbar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.logo-soccer-symbol {
+  font-size: 1.6rem;
+  filter: drop-shadow(0 0 8px rgba(249, 115, 22, 0.4));
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #ffffff;
+}
+
+.logo-highlight {
+  color: #f97316;
+  text-shadow: 0 0 10px rgba(249, 115, 22, 0.5);
+}
+
+.navbar-links-desktop {
+  display: flex;
+  gap: 1.25rem;
+}
+
+.nav-item-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.nav-item-btn:hover {
+  color: #f97316;
+  background: rgba(249, 115, 22, 0.08);
+}
+
+.nav-item-btn.active {
+  color: #ffffff;
+  background: #f97316;
+  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+}
+
+.navbar-profile-desktop {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.profile-badge-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 10px 14px;
+
+  border-radius: 999px;
+
+  background: rgba(17, 24, 39, 0.85);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  color: white;
+
+  font-weight: 700;
+
+  height: 44px;
+}
+
+.badge-role {
+  font-size: 0.7rem;
+  font-weight: 700;
+  background: rgba(249, 115, 22, 0.2);
+  color: #fed7aa;
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.navbar-logout-btn {
+  width: 44px;
+  height: 44px;
+
+  border-radius: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(251, 113, 133, 0.12);
+
+  border: 1px solid rgba(251, 113, 133, 0.22);
+
+  color: #fb7185;
+
+  cursor: pointer;
+
+  transition: 0.25s ease;
+
+  flex-shrink: 0;
+}
+
+.navbar-logout-btn:hover {
+  transform: translateY(-2px);
+
+  background: rgba(251, 113, 133, 0.18);
+}
+
+.navbar-logout-btn:hover {
+  background: #ef4444;
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.35);
+}
+
+/* Hamburguesa móvil */
+.navbar-mobile-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  color: #f8fafc;
+  cursor: pointer;
+}
+
+.navbar-mobile-menu {
+  display: flex;
+  flex-direction: column;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1.5px solid rgba(249, 115, 22, 0.25);
+  padding: 1rem 2rem;
+  gap: 0.75rem;
+}
+
+.mobile-nav-btn {
+  background: transparent;
+  border: none;
+  color: #cbd5e1;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.mobile-nav-btn.active {
+  background: #f97316;
+  color: #ffffff;
+}
+
+.navbar-profile-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  flex-direction: row;
+}
+
+.mobile-profile-name {
+  font-size: 0.9rem;
+  color: #94a3b8;
+  margin-bottom: 0.75rem;
+}
+
+.mobile-logout-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
+  padding: 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+
+  .navbar-links-desktop,
+  .navbar-profile-desktop {
+    display: none;
+  }
+
+  .navbar-mobile-toggle {
+    display: block;
+  }
+}
+
+/* LOGO SPORT3 PREMIUM */
+.dashboard-brand,
+.navbar-brand,
+.brand-logo {
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+}
+
+.dashboard-brand-icon,
+.logo-icon,
+.brand-icon {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(145deg, #ffffff, #dbeafe) !important;
+  box-shadow: 0 12px 34px rgba(255, 106, 0, 0.38) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.dashboard-brand-icon::before,
+.logo-icon::before,
+.brand-icon::before {
+  content: '' !important;
+  position: absolute !important;
+  inset: 6px !important;
+  border-radius: 50% !important;
+  background: conic-gradient(from 180deg,
+      #0f172a 0deg,
+      #0f172a 70deg,
+      #facc15 70deg,
+      #facc15 150deg,
+      #60a5fa 150deg,
+      #60a5fa 250deg,
+      #ffffff 250deg,
+      #ffffff 360deg) !important;
+  border: 2px solid #0f172a !important;
+}
+
+.dashboard-brand-icon::after,
+.logo-icon::after,
+.brand-icon::after {
+  content: '' !important;
+  position: absolute !important;
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 50% !important;
+  background: #0f172a !important;
+  left: 18px !important;
+  top: 18px !important;
+}
+
+.dashboard-brand-text,
+.brand-text,
+.logo-text {
+  font-size: 26px !important;
+  font-weight: 900 !important;
+  letter-spacing: -1px !important;
+  color: #ffffff !important;
+}
+
+.dashboard-brand-text span,
+.brand-text span,
+.logo-text span {
+  color: #ff9a3d !important;
+}
+
+/* =========================
+   SPORT3 PREMIUM LOGO
+========================= */
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+}
+
+/* ICONO */
+.premium-logo-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  position: relative;
+
+  background: linear-gradient(145deg,
+      #ffffff,
+      #dbeafe);
+
+  box-shadow:
+    0 0 30px rgba(255, 106, 0, 0.35),
+    0 10px 25px rgba(0, 0, 0, 0.25);
+
+  overflow: hidden;
+
+  flex-shrink: 0;
+}
+
+/* CIRCULO INTERNO */
+.premium-logo-icon::before {
+  content: '';
+
+  position: absolute;
+  inset: 6px;
+
+  border-radius: 50%;
+
+  background:
+    conic-gradient(from 180deg,
+      #0f172a 0deg,
+      #0f172a 70deg,
+      #facc15 70deg,
+      #facc15 150deg,
+      #60a5fa 150deg,
+      #60a5fa 250deg,
+      #ffffff 250deg,
+      #ffffff 360deg);
+
+  border: 2px solid #0f172a;
+}
+
+/* PUNTO NEGRO */
+.premium-logo-icon::after {
+  content: '';
+
+  position: absolute;
+
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+
+  background: #0f172a;
+
+  left: 18px;
+  top: 18px;
+}
+
+/* TEXTO */
+.logo-text {
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -1px;
+
+  color: #ffffff;
+}
+
+.logo-highlight {
+  color: #ff9a3d;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+  .logo-text {
+    font-size: 22px;
+  }
+
+  .premium-logo-icon {
+    width: 38px;
+    height: 38px;
+  }
+
+}

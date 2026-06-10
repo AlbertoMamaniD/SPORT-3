@@ -1,0 +1,257 @@
+.checkout-summary-box {
+  background: rgba(9, 13, 22, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.checkout-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+}
+
+.checkout-row span {
+  color: #94a3b8;
+}
+
+.price-highlight {
+  color: #34d399;
+  font-size: 1.2rem;
+}
+
+.section-subtitle {
+  margin: 0 0 0.75rem;
+  font-size: 0.9rem;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+/* OPCIONES DE PAGO */
+.payment-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.payment-option-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.payment-option-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(249, 115, 22, 0.25);
+}
+
+.payment-option-card.active {
+  background: rgba(249, 115, 22, 0.08);
+  border-color: #f97316;
+  color: #ffffff;
+}
+
+.payment-option-card svg {
+  color: #94a3b8;
+}
+
+.payment-option-card.active svg {
+  color: #f97316;
+}
+
+.option-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.option-info strong {
+  font-size: 0.95rem;
+}
+
+.option-info span {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.payment-option-card.active .option-info span {
+  color: #cbd5e1;
+}
+
+/* QR SCREEN */
+.qr-payment-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+}
+
+.qr-instruction {
+  font-size: 0.85rem;
+  color: #cbd5e1;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.qr-wrapper-box {
+  position: relative;
+  background: #f8fafc;
+  padding: 1rem;
+  border-radius: 16px;
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  overflow: hidden;
+}
+
+.qr-scan-line {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: #f97316;
+  box-shadow: 0 0 8px #f97316;
+  animation: scanQR 2.5s infinite ease-in-out;
+}
+
+@keyframes scanQR {
+  0% { top: 0%; }
+  50% { top: 100%; }
+  100% { top: 0%; }
+}
+
+.qr-svg-mockup {
+  width: 100%;
+  height: 100%;
+}
+
+.qr-status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+.indicator-pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #f97316;
+  box-shadow: 0 0 8px #f97316;
+  animation: glow 1.2s infinite alternate;
+}
+
+@keyframes glow {
+  from { opacity: 0.3; }
+  to { opacity: 1; }
+}
+
+/* ZONA DE COMPROBANTE */
+.comprobante-section {
+  width: 100%;
+  text-align: left;
+}
+
+.comprobante-upload-zone {
+  width: 100%;
+  border: 2px dashed rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 1.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  background: rgba(255, 255, 255, 0.02);
+  color: #64748b;
+  box-sizing: border-box;
+}
+
+.comprobante-upload-zone:hover,
+.comprobante-upload-zone.drag-active {
+  border-color: #f97316;
+  background: rgba(249, 115, 22, 0.06);
+  color: #fb923c;
+}
+
+.comprobante-upload-zone strong {
+  font-size: 0.9rem;
+  color: #cbd5e1;
+}
+
+.comprobante-upload-zone span {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.comprobante-upload-zone svg {
+  color: #f97316;
+  margin-bottom: 0.25rem;
+}
+
+/* PREVIEW del comprobante */
+.comprobante-preview-box {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(16, 185, 129, 0.05);
+  border: 1.5px solid rgba(16, 185, 129, 0.25);
+  border-radius: 16px;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.comprobante-preview-img {
+  width: 100%;
+  max-height: 180px;
+  object-fit: contain;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.comprobante-preview-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: #34d399;
+  word-break: break-all;
+  text-align: center;
+}
+
+.comprobante-change-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #94a3b8;
+  font-size: 0.75rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.comprobante-change-btn:hover {
+  border-color: rgba(249, 115, 22, 0.4);
+  color: #fb923c;
+}
